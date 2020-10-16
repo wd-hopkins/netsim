@@ -1,0 +1,9 @@
+Possible Title - An evaluation of beat tracking metrical features and their relevance in various tempo induction applications.
+
+Tempo Induction or Beat Tracking is a well established task within the field of Music Information Retrieval (MIR), which aims to find the tempo, in beats per minute, of a piece of music. It can also be described as the frequency of which a person would tap to the beat of a piece of music.
+
+Many applications that use Beat Tracking annotations have been identified, such as performance analysis, automatic rhythmic alignment of audio, and music recommendation. However, it is not known just how relevant Tempo Induction is for any of these use cases. This is important to define in order to lay out a clear direction for the future of Tempo Induction research.
+
+I plan to quantify the significance of Beat Tracking annotations that are present in publicly available datasets used for training applications by the means of close analysis of specific use-cases, whether they are just stated in literature, or are real world applications.
+
+The majority of project development will take place in Semester 2, due to an imbalance of my modules in Semester 1 compared to Semester 2. Nevertheless, I plan on producing a draft literature review by week 6.

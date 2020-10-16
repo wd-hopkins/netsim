@@ -1,0 +1,10 @@
+Accuracy Metrics
+ACC1 computes a 0 or 1 score per track, which indicates the correctness of an estimate, allowing a 4% tolerance. 
+This is considered to strict for certain pieces (romantic piano music), and too lenient for others (electronic music).
+
+ACC2 allows estimates to be wrong by the factors 2, 3, 1/2 or 1/3. 
+
+P-Score is a metric that takes tempo ambiguity into account and treats it as an inherent property of music.
+
+Major Problems
+- Definition of specific metrical features is not given for most tasks that utilize tempo induction methods.

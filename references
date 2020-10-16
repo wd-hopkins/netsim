@@ -1,0 +1,29 @@
+General
+https://docs.google.com/document/d/1jCk0HOvuq_y_PZrw5PvT7LcfMaRG9XcG-PtuSU9i8k8/edit?usp=sharing
+https://repositori.upf.edu/handle/10230/27565
+https://www.tandfonline.com/doi/full/10.1080/17459737.2012.704154
+https://librosa.org/doc/latest/index.html
+
+Audio Tempo Induction
+2006 paper - http://www.cs.tut.fi/sgn/arg/klap/gouyon-taslp-2006.pdf
+- TI algorithms can reach over 80% accuracy, provided we do not insist on finding a specific metrical level.
+- One conclusion for future development is that robust tempo induction entails the processing of frame features rather than that of onset lists.
+- Many avenues for future work in audio tempo tracking are highlighted, as for instance the definition of the best rhythmic features and the most appropriate periodicity detection method.
+
+
+2020 paper - https://transactions.ismir.net/articles/10.5334/tismir.43/
+- Applications and use cases for global tempo estimation are somewhat ill-defined.
+- ACC1 and ACC2 are not suitable for some use cases due to their binary nature.
+- The industry has not adopted p-score.
+- Some currently used datasets are too small or do not have a tempo that is stable enough for ACC1 and ACC2.
+- "It is impossible to solve a task for which neither use cases with success criteria have been well motivated and properly defined, not the suitability of metrics or datasets has been shown."
+- Proposed a metric that measures how close and in which direction an estimate is to a reference value: octave error OE1 and OE2.
+
+
+Recent TI Evaluation Approaches - https://www.academia.edu/29684763/Comparative_Evaluation_and_Combination_of_Audio_Tempo_Estimation_Approaches
+
+https://repositorio.ucp.pt/handle/10400.14/4800
+
+http://archives.ismir.net/ismir2019/paper/000058.pdf
+
+https://www.researchgate.net/publication/228575453_Beat_and_Tempo_Induction_for_Music_Performance
