@@ -8,3 +8,20 @@ P-Score is a metric that takes tempo ambiguity into account and treats it as an 
 
 Major Problems
 - Definition of specific metrical features is not given for most tasks that utilize tempo induction methods.
+
+Algorithms based on a feature list creation block, that parses the audio data into a temporal series of features which convey the predominant rhythmic information to the following pulse induction block.
+
+Schreiber + Muller
+Single-step musical tempo estimation system based on a convolutional neural network.
+Uses a mel scaled magnitude spectogram as input.
+
+Bock et al.
+Processes a preprocessed signal using a neural network that is trained to predict the positions of beats inside the signal. This results in a beat activation function wihch is then fed into a bank of resonating comb filters to determine the tempo.
+Pre-processing - frame-wise processing. 'Therefore the audio signal is split into overlapping frames and weighted with a Hann window of same length before being transferred to a time-frequency representation by means of the Short-time Fourier Transform (STFT).'
+Neural Network - outputs a beat activation function, which represents the probability of a frame being a beat position. 'Instead of processing the beat activation function to extract the positions of the beats, weuse it directly as a one-dimensional input to the bank of resonating comb filters.'
+
+Convolutional neural Network - https://en.wikipedia.org/wiki/Convolutional_neural_network
+
+Hann function - https://en.wikipedia.org/wiki/Hann_function
+
+Mel Scale - https://en.wikipedia.org/wiki/Mel_scale

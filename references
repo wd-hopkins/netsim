@@ -10,7 +10,6 @@ Audio Tempo Induction
 - One conclusion for future development is that robust tempo induction entails the processing of frame features rather than that of onset lists.
 - Many avenues for future work in audio tempo tracking are highlighted, as for instance the definition of the best rhythmic features and the most appropriate periodicity detection method.
 
-
 2020 paper - https://transactions.ismir.net/articles/10.5334/tismir.43/
 - Applications and use cases for global tempo estimation are somewhat ill-defined.
 - ACC1 and ACC2 are not suitable for some use cases due to their binary nature.
@@ -19,7 +18,6 @@ Audio Tempo Induction
 - "It is impossible to solve a task for which neither use cases with success criteria have been well motivated and properly defined, not the suitability of metrics or datasets has been shown."
 - Proposed a metric that measures how close and in which direction an estimate is to a reference value: octave error OE1 and OE2.
 
-
 Recent TI Evaluation Approaches - https://www.academia.edu/29684763/Comparative_Evaluation_and_Combination_of_Audio_Tempo_Estimation_Approaches
 
 https://repositorio.ucp.pt/handle/10400.14/4800
@@ -27,3 +25,10 @@ https://repositorio.ucp.pt/handle/10400.14/4800
 http://archives.ismir.net/ismir2019/paper/000058.pdf
 
 https://www.researchgate.net/publication/228575453_Beat_and_Tempo_Induction_for_Music_Performance
+
+Bock, S., Krebs, F., & Widmer, G. (2015). Accurate tempo estimation based on recurrent neural networks and resonating comb filters. In Proceedings of the 16th International Society for Music Information Retrieval Conference (ISMIR), pages 625–631. Malaga, Spain.http://archives.ismir.net/ismir2015/paper/000196.pdf
+https://github.com/CPJKU/madmom
+
+Schreiber, H., & Muller, M. (2018b). A single-step approach to musical tempo estimation using a convolutional neural network. In Proceedings of the 19th International Society for Music Information Retrieval Conference (ISMIR). Paris, France.
+https://www.audiolabs-erlangen.de/content/05-fau/professor/00-mueller/03-publications/2018_SchreiberMueller_TempoCNN_ISMIR_ePrint.pdf
+https://github.com/hendriks73/tempo-cnn
