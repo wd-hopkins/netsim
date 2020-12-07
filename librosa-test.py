@@ -11,7 +11,7 @@ def get_tempo(file, duration):
 
 
 def show_audio_as_spectrogram(file):
-    y, sr = librosa.load(file, duration=15)
+    y, sr = librosa.load(file, offset=6, duration=10)
     fig, ax = plt.subplots(nrows=2, ncols=1, sharex=True)
     d = librosa.amplitude_to_db(np.abs(librosa.stft(y)), ref=np.max)
     librosa.display.specshow(d, y_axis='linear', x_axis='time', sr=sr, ax=ax[0])
@@ -28,5 +28,5 @@ def waveplot(file):
     plt.show()
 
 
-show_audio_as_spectrogram(librosa.example("nutcracker"))
-waveplot(librosa.example("nutcracker"))
+show_audio_as_spectrogram("music/Queen_Another_One_Bites_the_Dust.mp3")
+# waveplot(librosa.example("nutcracker"))
