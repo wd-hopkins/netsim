@@ -1,0 +1,10 @@
+Practical Byzantine Fault Tolerance
+http://pmg.csail.mit.edu/papers/osdi99.pdf
+
+omnet - Distributed system simulator
+
+An asynchronous [(n-1)/3]-resilient consensus protocol 
+Unanimity in an unknown and unreliable environment 
+Issues of attack in distributed systems - A Generic Attack Model
+
+https://www.cybok.org/media/downloads/Distributed_Systems_Security_issue_1.0.pdf
