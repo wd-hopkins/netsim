@@ -1,0 +1,7 @@
+It is not always easy to determine how a distributed system will act when one or more of the nodes in the network become compromised by attackers. 
+
+I aim to engineer a framework that can prototype a distributed system and simulate many standard attacks on each node in the network, such as the sending of arbitrary messages, and denial of service attacks. The framework will allow users to specify a network topology and install and execute arbitrary code onto each node in the network. I will be using Java to implement my framework, which has built in GUI and networking capabilities. 
+
+The purpose of such an application would be to provide a simple way to test whether a distributed network is resistant to common vulnerabilities, without the need to spin up and attack the network directly.
+
+It is important that the basic elements of the project be completed by the beginning of semester 2, i.e the GUI, CLI, and the creation of simple models. 
