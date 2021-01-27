@@ -1,4 +1,4 @@
-package org.framework.models;
+package org.netsim.models;
 
 public abstract class Model {
     public String id;
@@ -8,6 +8,8 @@ public abstract class Model {
     }
 
     public abstract void onSelect();
+
+    public abstract void run();
 
     @Override
     public String toString() {

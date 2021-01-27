@@ -24,4 +24,6 @@ test {
     useJUnitPlatform()
 }
 
-mainClassName = "org.framework.Program"
+application {
+    mainClass = "org.netsim.Program"
+}

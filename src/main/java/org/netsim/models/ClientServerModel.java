@@ -1,4 +1,4 @@
-package org.framework.models;
+package org.netsim.models;
 
 public class ClientServerModel extends Model {
 
@@ -9,5 +9,10 @@ public class ClientServerModel extends Model {
     @Override
     public void onSelect() {
         System.out.println(this.toString());
+    }
+
+    @Override
+    public void run() {
+        System.out.println("Client Server");
     }
 }

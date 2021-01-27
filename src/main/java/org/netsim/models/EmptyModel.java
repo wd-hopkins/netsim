@@ -1,4 +1,4 @@
-package org.framework.models;
+package org.netsim.models;
 
 public class EmptyModel extends Model {
 
@@ -7,7 +7,8 @@ public class EmptyModel extends Model {
     }
 
     @Override
-    public void onSelect() {
+    public void onSelect() {}
 
-    }
+    @Override
+    public void run() {}
 }
