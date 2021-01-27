@@ -22,3 +22,6 @@ gradle-app.setting
 ## OS Specific
 .DS_Store
 Thumbs.db
+
+# Lombok
+lombok.config

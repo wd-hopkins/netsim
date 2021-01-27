@@ -1,23 +1,32 @@
 plugins {
     id 'java'
     id 'application'
-    id 'org.openjfx.javafxplugin' version '0.0.9'
+    id "io.freefair.lombok" version "5.3.0"
 }
 
 repositories {
     mavenCentral()
 }
 
-dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
-    compileOnly 'org.projectlombok:lombok:1.18.16'
-    annotationProcessor 'org.projectlombok:lombok:1.18.16'
+def currentOS = org.gradle.nativeplatform.platform.internal.DefaultNativePlatform.currentOperatingSystem
+def platform
+if (currentOS.isWindows()) {
+    platform = 'win'
+} else if (currentOS.isLinux()) {
+    platform = 'linux'
+} else if (currentOS.isMacOsX()) {
+    platform = 'mac'
 }
 
-javafx {
-    version = "15.0.1"
-    modules = [ 'javafx.controls', 'javafx.fxml' ]
+java {
+    modularity.inferModulePath = true
+}
+
+dependencies {
+    implementation "org.openjfx:javafx-base:15.0.1:${platform}"
+    implementation "org.openjfx:javafx-controls:15.0.1:${platform}"
+    implementation "org.openjfx:javafx-graphics:15.0.1:${platform}"
+    implementation "org.openjfx:javafx-fxml:15.0.1:${platform}"
 }
 
 test {
@@ -25,5 +34,6 @@ test {
 }
 
 application {
-    mainClass = "org.netsim.Program"
+    mainModule = "org.netsim"
+    mainClass = "org.netsim.NetworkSimulator"
 }

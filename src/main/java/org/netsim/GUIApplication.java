@@ -7,13 +7,7 @@ import javafx.stage.Stage;
 import org.netsim.ui.ModelComboBox;
 import org.netsim.ui.StartButton;
 
-public class Program extends Application {
-
-    public static void main(String[] args) {
-        if (args.length > 1)
-            System.out.println(args[1]);
-        launch(args);
-    }
+public class GUIApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
