@@ -1,11 +1,9 @@
-package org.netsim;
+package org.netsim.ui;
 
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.netsim.ui.ModelComboBox;
-import org.netsim.ui.StartButton;
 
 public class GUIApplication extends Application {
 

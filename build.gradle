@@ -22,6 +22,18 @@ java {
     modularity.inferModulePath = true
 }
 
+ext.moduleName = 'org.netsim'
+
+compileJava {
+    inputs.property('moduleName', moduleName)
+    doFirst {
+        options.compilerArgs = [
+                '--module-path', classpath.asPath
+        ]
+        classpath = files()
+    }
+}
+
 dependencies {
     implementation "org.openjfx:javafx-base:15.0.1:${platform}"
     implementation "org.openjfx:javafx-controls:15.0.1:${platform}"

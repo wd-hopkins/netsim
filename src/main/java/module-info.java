@@ -3,7 +3,7 @@ module org.netsim {
     requires javafx.controls;
     requires static lombok;
 
-    opens org.netsim to javafx.graphics;
+    opens org.netsim.ui to javafx.graphics;
 
     exports org.netsim;
 }
