@@ -14,12 +14,13 @@ public class NetworkSimulator {
                     continue;
                 case "-h":
                     showCliOptions();
+                    break;
             }
         }
         if (runWithGui) {
             GUIApplication.launch(GUIApplication.class, args);
         } else {
-            CommandLineShell.run();
+            new CommandShell().run();
         }
     }
 
