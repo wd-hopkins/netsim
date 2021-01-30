@@ -1,5 +1,6 @@
 package org.netsim;
 
+import org.netsim.cli.CommandShell;
 import org.netsim.ui.GUIApplication;
 
 public class NetworkSimulator {
@@ -20,7 +21,7 @@ public class NetworkSimulator {
         if (runWithGui) {
             GUIApplication.launch(GUIApplication.class, args);
         } else {
-            new CommandShell().run();
+            CommandShell.run();
         }
     }
 

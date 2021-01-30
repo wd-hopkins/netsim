@@ -16,7 +16,7 @@ public class ModelComboBox {
         modelComboBox.setId("ModelComboBox");
         modelComboBox.setLayoutY(0.0f);
         modelComboBox.getItems().addAll(
-                new EmptyModel("Select a model"),
+                new EmptyModel(),
                 new ClientServerModel()
         );
         modelComboBox.getSelectionModel().selectFirst();

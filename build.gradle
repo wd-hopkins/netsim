@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'application'
     id "io.freefair.lombok" version "5.3.0"
+    id "com.github.johnrengelman.shadow" version "6.1.0"
 }
 
 repositories {
@@ -18,27 +19,16 @@ if (currentOS.isWindows()) {
     platform = 'mac'
 }
 
-java {
-    modularity.inferModulePath = true
-}
-
-ext.moduleName = 'org.netsim'
-
-compileJava {
-    inputs.property('moduleName', moduleName)
-    doFirst {
-        options.compilerArgs = [
-                '--module-path', classpath.asPath
-        ]
-        classpath = files()
-    }
-}
+mainClassName = "org.netsim.NetworkSimulator"
 
 dependencies {
     implementation "org.openjfx:javafx-base:15.0.1:${platform}"
     implementation "org.openjfx:javafx-controls:15.0.1:${platform}"
     implementation "org.openjfx:javafx-graphics:15.0.1:${platform}"
     implementation "org.openjfx:javafx-fxml:15.0.1:${platform}"
+    implementation group: 'info.picocli', name: 'picocli-shell-jline3', version: '4.6.1'
+    implementation group: 'org.jline', name: 'jline-terminal-jansi', version: '3.19.0'
+    implementation group: 'org.reflections', name: 'reflections', version: '0.9.12'
 }
 
 test {
@@ -47,5 +37,5 @@ test {
 
 application {
     mainModule = "org.netsim"
-    mainClass = "org.netsim.NetworkSimulator"
+    mainClass = mainClassName
 }
