@@ -24,8 +24,7 @@ import java.util.function.Supplier;
 
 public class CommandShell {
 
-    @Getter
-    private static final ModelRunner runner = new ModelRunner();
+    private static final @Getter ModelRunner runner = new ModelRunner();
 
     public static void run() {
         AnsiConsole.systemInstall();
@@ -85,7 +84,8 @@ public class CommandShell {
                     SelectCommand.class,
                     RunCommand.class,
                     ShowCommand.class,
-                    SetCommand.class
+                    SetCommand.class,
+                    ListCommand.class
             })
     static class CliCommands implements Runnable {
         PrintWriter out;

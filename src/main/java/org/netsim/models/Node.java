@@ -2,33 +2,47 @@ package org.netsim.models;
 
 import lombok.Getter;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class Node {
 
-    @Getter
-    private final Gate in = Gate.IN;
-    @Getter
-    private final Gate out = Gate.OUT;
+    private final @Getter Gate in = Gate.IN;
+    private final @Getter Gate out = Gate.OUT;
     public String name;
 
     public Node(String name) {
         this.name = name;
     }
 
-    public void connect(Gate in, Gate out) {
-        if (in == Gate.IN && out == Gate.OUT) {
-            in.connection = out;
-            out.connection = in;
+    /**
+     * Connect output gate of this node to the input gate of another node.
+     * Requires input to be of type <code>Gate.IN</code>
+     */
+    public void connect(Gate in) {
+        if (in == Gate.IN) {
+            this.out.connection = in;
+            in.connection = this.out;
         } else {
-            System.out.println("Input gate must be connected to an Output gate");
+            System.out.println("The given gate must be an input gate");
         }
     }
 
-    public enum Gate {
+    public void send() {
+        this.out.connection.buffer.add("Hello!");
+    }
+
+    public String receive() {
+        return String.format("[%s] Received: %s", this.name, this.in.buffer.poll());
+    }
+
+    enum Gate {
         IN,
         OUT;
 
-        @Getter
         private Gate connection;
+
+        private Queue<String> buffer = new LinkedList<>();
     }
 
 }

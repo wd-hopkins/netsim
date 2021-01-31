@@ -7,8 +7,7 @@ import org.netsim.models.Model;
 
 public class ModelRunner {
 
-    @Getter @Setter
-    private Model selectedModel;
+    private @Getter @Setter Model selectedModel;
 
     public ModelRunner() {
         selectedModel = new EmptyModel();

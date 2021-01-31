@@ -8,8 +8,7 @@ import org.netsim.models.Model;
 
 public class StartButton {
 
-    @Getter
-    private final Button startButton;
+    private final @Getter Button startButton;
 
     public StartButton() {
         startButton = new Button("Start");

@@ -8,8 +8,7 @@ import org.netsim.models.Model;
 
 public class ModelComboBox {
 
-    @Getter
-    private final ComboBox<Model> modelComboBox;
+    private final @Getter ComboBox<Model> modelComboBox;
 
     public ModelComboBox() {
         modelComboBox = new ComboBox<>();

@@ -1,5 +1,6 @@
 package org.netsim.models;
 
+import lombok.Getter;
 import lombok.SneakyThrows;
 import org.reflections.Reflections;
 
@@ -7,9 +8,10 @@ import java.util.Set;
 
 public abstract class Model {
     public static String modelId = "Choose a model";
+    private static @Getter Set<Class<? extends Model>> extendingClasses;
 
     public Model() {
-
+        extendingClasses = collectExtendingClasses();
     }
 
     public abstract void onSelect();
@@ -23,7 +25,7 @@ public abstract class Model {
         return modelId;
     }
 
-    public static Set<Class<? extends Model>> getExtendingClasses() {
+    private static Set<Class<? extends Model>> collectExtendingClasses() {
         Reflections reflections = new Reflections("org.netsim.models");
         return reflections.getSubTypesOf(Model.class);
     }

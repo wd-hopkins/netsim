@@ -9,8 +9,8 @@ public class ClientServerModel extends Model {
     public ClientServerModel() {
         server = new Node("Server");
         client = new Node("Client1");
-        server.connect(server.getIn(), client.getOut());
-        client.connect(client.getIn(), server.getOut());
+        server.connect(client.getIn());
+        client.connect(server.getIn());
     }
 
     @Override
@@ -20,7 +20,10 @@ public class ClientServerModel extends Model {
 
     @Override
     public void run() {
-        System.out.println("Client Server");
+        System.out.printf("Beginning simulation of model %s\n", this);
+        client.send();
+        System.out.println(server.receive());
+        System.out.println("End of simulation");
     }
 
     @Override
