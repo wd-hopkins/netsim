@@ -1,14 +1,15 @@
 package org.netsim.models;
 
 import lombok.Getter;
+import lombok.SneakyThrows;
 
 import java.util.LinkedList;
 import java.util.Queue;
 
 public class Node {
 
-    private final @Getter Gate in = Gate.IN;
-    private final @Getter Gate out = Gate.OUT;
+    protected final @Getter Gate in = Gate.IN;
+    protected final @Getter Gate out = Gate.OUT;
     public String name;
 
     public Node(String name) {
@@ -29,20 +30,30 @@ public class Node {
     }
 
     public void send() {
-        this.out.connection.buffer.add("Hello!");
+        send("You must have a file in the current directory that overrides the receive method of the Node class.");
+    }
+
+    public void send(String message) {
+        this.out.connection.buffer.add(message);
+    }
+
+    @SneakyThrows
+    public void send(String message, long delay) {
+        Thread.sleep(delay);
+        send(message);
     }
 
     public String receive() {
         return String.format("[%s] Received: %s", this.name, this.in.buffer.poll());
     }
 
-    enum Gate {
+    protected enum Gate {
         IN,
         OUT;
 
-        private Gate connection;
+        public Gate connection;
 
-        private Queue<String> buffer = new LinkedList<>();
+        public Queue<String> buffer = new LinkedList<>();
     }
 
 }

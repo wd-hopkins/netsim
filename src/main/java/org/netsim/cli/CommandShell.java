@@ -17,9 +17,11 @@ import picocli.shell.jline3.PicocliCommands;
 import picocli.shell.jline3.PicocliCommands.ClearScreen;
 import picocli.shell.jline3.PicocliCommands.PicocliCommandsFactory;
 
+import java.io.File;
 import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Scanner;
 import java.util.function.Supplier;
 
 public class CommandShell {
@@ -27,9 +29,10 @@ public class CommandShell {
     private static final @Getter ModelRunner runner = new ModelRunner();
 
     public static void run() {
+        getWorkingDirectory();
         AnsiConsole.systemInstall();
         try {
-            Supplier<Path> workDir = () -> Paths.get(System.getProperty("user.dir"));
+            Supplier<Path> workDir = () -> Paths.get(runner.getWorkingDirectory().getAbsolutePath());
             Builtins builtins = new Builtins(workDir, null, null);
             builtins.rename(Builtins.Command.TTOP, "top");
             builtins.alias("zle", "widget");
@@ -75,6 +78,28 @@ public class CommandShell {
         } finally {
             AnsiConsole.systemUninstall();
         }
+    }
+
+    private static void getWorkingDirectory() {
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Choose a working directory (leave blank for current): ");
+        String dir = scan.nextLine();
+        if (dir.isEmpty()) {
+            return;
+        }
+
+        File workingDir = new File(dir);
+        try {
+            if (workingDir.exists() && workingDir.isDirectory()) {
+                runner.setWorkingDirectory(workingDir);
+                return;
+            } else {
+                System.out.println("Selection Invalid.");
+            }
+        } catch (SecurityException e) {
+            System.out.println("Permission Denied.");
+        }
+        getWorkingDirectory();
     }
 
     @Command(name = "",

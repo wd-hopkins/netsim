@@ -7,6 +7,16 @@ public class EmptyModel extends Model {
     }
 
     @Override
+    public void init() {
+
+    }
+
+    @Override
+    public void init(Class<?> userNode) {
+
+    }
+
+    @Override
     public void onSelect() {
         System.out.println("Choose a model first");
     }
@@ -16,8 +26,4 @@ public class EmptyModel extends Model {
         onSelect();
     }
 
-    @Override
-    public void showOptions() {
-        onSelect();
-    }
 }

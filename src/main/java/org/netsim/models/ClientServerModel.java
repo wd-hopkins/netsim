@@ -1,5 +1,7 @@
 package org.netsim.models;
 
+import lombok.SneakyThrows;
+
 public class ClientServerModel extends Model {
 
     public static String modelId = "clientserver";
@@ -7,8 +9,22 @@ public class ClientServerModel extends Model {
     public Node client;
 
     public ClientServerModel() {
+        init();
+    }
+
+    @Override
+    public void init() {
         server = new Node("Server");
         client = new Node("Client1");
+        server.connect(client.getIn());
+        client.connect(server.getIn());
+    }
+
+    @Override
+    @SneakyThrows
+    public void init(Class<?> userNode) {
+        server = (Node) userNode.getDeclaredConstructor(String.class).newInstance("Server");
+        client = (Node) userNode.getDeclaredConstructor(String.class).newInstance("Client1");
         server.connect(client.getIn());
         client.connect(server.getIn());
     }
@@ -31,8 +47,4 @@ public class ClientServerModel extends Model {
         return modelId;
     }
 
-    @Override
-    public void showOptions() {
-        System.out.println("Coming Soon");
-    }
 }
