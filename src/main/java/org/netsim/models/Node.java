@@ -2,9 +2,9 @@ package org.netsim.models;
 
 import lombok.Getter;
 import lombok.SneakyThrows;
+import org.netsim.util.ObservableQueue;
 
 import java.util.LinkedList;
-import java.util.Queue;
 
 public class Node {
 
@@ -14,6 +14,7 @@ public class Node {
 
     public Node(String name) {
         this.name = name;
+        this.in.buffer.registerListener(e -> onReceive(receive()));
     }
 
     /**
@@ -25,8 +26,20 @@ public class Node {
             this.out.connection = in;
             in.connection = this.out;
         } else {
-            System.out.println("The given gate must be an input gate");
+            throw new IllegalArgumentException("The given gate must be an input gate");
         }
+    }
+
+    public void init() {
+        send();
+    }
+
+    public void onReceive(String message) {
+        System.out.printf("[%s] Received: %s\n", this.name, message);
+    }
+
+    public String receive() {
+        return this.in.buffer.poll();
     }
 
     public void send() {
@@ -43,17 +56,13 @@ public class Node {
         send(message);
     }
 
-    public String receive() {
-        return String.format("[%s] Received: %s", this.name, this.in.buffer.poll());
-    }
-
     protected enum Gate {
         IN,
         OUT;
 
         public Gate connection;
 
-        public Queue<String> buffer = new LinkedList<>();
+        public ObservableQueue<String> buffer = new ObservableQueue<>(new LinkedList<>());
     }
 
 }

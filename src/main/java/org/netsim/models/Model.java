@@ -1,21 +1,23 @@
 package org.netsim.models;
 
 import lombok.SneakyThrows;
-import org.netsim.ClassLoaderUtil;
+import org.netsim.util.ClassLoaderUtil;
 
 import java.util.Set;
 
 public abstract class Model {
-    public static String modelId = "Choose a model";
     private static final Set<Class<? extends Model>> extendingClasses = ClassLoaderUtil.collectExtendingClasses(Model.class, "org.netsim.models");
+    public static String modelId = "Choose a model";
 
     public Model() {
 
     }
 
-    public abstract void init();
+    public void init() {
+        init(Node.class);
+    }
 
-    public abstract void init(Class<?> userNode);
+    public abstract void init(Class<?> nodeImpl);
 
     public abstract void onSelect();
 

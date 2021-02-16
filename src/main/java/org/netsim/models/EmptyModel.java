@@ -7,12 +7,7 @@ public class EmptyModel extends Model {
     }
 
     @Override
-    public void init() {
-
-    }
-
-    @Override
-    public void init(Class<?> userNode) {
+    public void init(Class<?> nodeImpl) {
 
     }
 
