@@ -21,7 +21,7 @@ public class Node {
         this.out = new OutputGate();
         this.context = ClassUtil.getContextClass();
         this.threadPool = context == CommandShell.class ? CommandShell.getRunner().getThreadPool() : GUIApplication.getRunner().getThreadPool();
-        this.in.buffer.registerListener(e -> this.threadPool.submit(() -> this.onReceive(this.receive()))); //TODO: fix null messages
+        this.in.addListener(e -> this.threadPool.submit(() -> this.onReceive(this.receive())));
     }
 
     public Node(String name) {
@@ -41,20 +41,20 @@ public class Node {
         send("You must have a file in the current directory that overrides the receive method of the Node class.");
     }
 
-    public void onReceive(String message) {
+    public void onReceive(Object message) {
         System.out.printf("[%s] Received: %s\n", this.name, message);
     }
 
-    public String receive() {
-        return this.in.buffer.poll();
+    public Object receive() {
+        return this.in.poll();
     }
 
-    public void send(String message) {
-        this.out.connection.buffer.offer(message);
+    public void send(Object message) {
+        this.out.send(message);
     }
 
     @SneakyThrows
-    public void send(String message, long delay) {
+    public void send(Object message, long delay) {
         Thread.sleep(delay);
         send(message);
     }

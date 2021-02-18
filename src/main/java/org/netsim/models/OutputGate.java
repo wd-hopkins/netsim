@@ -7,4 +7,8 @@ public class OutputGate {
     public OutputGate() {
 
     }
+
+    public void send(Object payload) {
+        this.connection.buffer.offer(payload);
+    }
 }

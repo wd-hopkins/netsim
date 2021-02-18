@@ -14,7 +14,7 @@ import java.util.concurrent.Executors;
 
 public class ModelRunner {
 
-    private final @Getter ExecutorService threadPool = Executors.newFixedThreadPool(1);
+    private @Getter ExecutorService threadPool;
     private @Getter @Setter File workingDirectory = new File(System.getProperty("user.dir"));
     private @Getter @Setter Model selectedModel;
 
@@ -24,6 +24,8 @@ public class ModelRunner {
 
     @SneakyThrows
     public void run() {
+        System.out.printf("Beginning simulation of model %s\n", this.selectedModel);
+        this.threadPool = Executors.newFixedThreadPool(1);
         if (ClassUtil.compileJavaClass(new File(workingDirectory, "UserImpl.java"))) {
             Class<?> userImpl = ClassUtil.loadClass(workingDirectory, "UserImpl");
             if (Node.class.isAssignableFrom(userImpl)) {
@@ -35,5 +37,7 @@ public class ModelRunner {
             this.selectedModel.init();
         }
         this.selectedModel.run();
+        //TODO: Keep track of scheduled events in order to determine if the simulation has concluded
+        System.out.println("End of simulation");
     }
 }

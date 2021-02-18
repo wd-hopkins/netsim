@@ -7,10 +7,18 @@ import java.util.LinkedList;
 public class InputGate {
 
     public OutputGate connection;
-    public ObservableQueue<String> buffer = new ObservableQueue<>(new LinkedList<>());
+    public ObservableQueue<Object> buffer = new ObservableQueue<>(new LinkedList<>());
 
     public InputGate() {
 
+    }
+
+    public Object poll() {
+        return this.buffer.poll();
+    }
+
+    public void addListener(ObservableQueue.Listener<Object> listener) {
+        this.buffer.registerListener(listener);
     }
 
 }

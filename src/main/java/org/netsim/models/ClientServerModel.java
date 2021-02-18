@@ -6,8 +6,8 @@ import org.netsim.util.ClassUtil;
 public class ClientServerModel extends Model {
 
     public static String modelId = "clientserver";
-    public Node server;
-    public Node client;
+    private Node server;
+    private Node client;
 
     public ClientServerModel() {
 
@@ -29,10 +29,7 @@ public class ClientServerModel extends Model {
 
     @Override
     public void run() {
-        System.out.printf("Beginning simulation of model %s\n", this);
         client.init();
-        //TODO: Keep track of scheduled events in order to determine if the simulation has concluded
-        System.out.println("End of simulation");
     }
 
     @Override
