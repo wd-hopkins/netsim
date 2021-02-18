@@ -4,8 +4,12 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import lombok.Getter;
+import org.netsim.ModelRunner;
 
 public class GUIApplication extends Application {
+
+    private static final @Getter ModelRunner runner = new ModelRunner();
 
     @Override
     public void start(Stage primaryStage) throws Exception {

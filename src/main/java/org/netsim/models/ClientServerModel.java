@@ -1,7 +1,7 @@
 package org.netsim.models;
 
 import lombok.SneakyThrows;
-import org.netsim.util.ClassLoaderUtil;
+import org.netsim.util.ClassUtil;
 
 public class ClientServerModel extends Model {
 
@@ -16,8 +16,8 @@ public class ClientServerModel extends Model {
     @Override
     @SneakyThrows
     public void init(Class<?> nodeImpl) {
-        server = (Node) ClassLoaderUtil.instantiate(nodeImpl, "Server");
-        client = (Node) ClassLoaderUtil.instantiate(nodeImpl, "Client1");
+        server = (Node) ClassUtil.instantiate(nodeImpl, "Server");
+        client = (Node) ClassUtil.instantiate(nodeImpl, "Client");
         server.connect(client.getIn());
         client.connect(server.getIn());
     }
@@ -31,6 +31,7 @@ public class ClientServerModel extends Model {
     public void run() {
         System.out.printf("Beginning simulation of model %s\n", this);
         client.init();
+        //TODO: Keep track of scheduled events in order to determine if the simulation has concluded
         System.out.println("End of simulation");
     }
 

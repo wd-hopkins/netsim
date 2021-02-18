@@ -1,6 +1,9 @@
 package org.netsim.util;
 
 import lombok.SneakyThrows;
+import org.netsim.NetworkSimulator;
+import org.netsim.cli.CommandShell;
+import org.netsim.ui.GUIApplication;
 import org.reflections.Reflections;
 
 import javax.tools.JavaCompiler;
@@ -12,7 +15,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.*;
 
-public class ClassLoaderUtil {
+public class ClassUtil {
 
     /**
      * Gets all extending classes of a given type in a package.
@@ -32,18 +35,26 @@ public class ClassLoaderUtil {
      * @param file file object of class to compile
      * @return true if compilation is successful
      */
-    public static boolean compileJavaClass(File file) {
+    public static boolean compileJavaClass(File... file) {
         // Compile Options
         List<String> options = new ArrayList<>(Arrays.asList("-classpath", System.getProperty("java.class.path")));
 
         // Required objects
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
-        Iterable<? extends JavaFileObject> compilationUnit = fileManager.getJavaFileObjectsFromFiles(Collections.singletonList(file));
+        Iterable<? extends JavaFileObject> compilationUnit = fileManager.getJavaFileObjectsFromFiles(Arrays.asList(file));
 
         // Create compilation task and run
         JavaCompiler.CompilationTask task = compiler.getTask(null, fileManager, null, options, null, compilationUnit);
         return task.call();
+    }
+
+    /**
+     * Returns the class that the program has been run with. Will return GUIApplication if the program is in GUI mode,
+     * and CommandShell if the program is in CLI mode.
+     */
+    public static Class<?> getContextClass() {
+        return NetworkSimulator.runWithGui ? GUIApplication.class : CommandShell.class;
     }
 
     /**

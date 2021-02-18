@@ -1,12 +1,12 @@
 package org.netsim.models;
 
 import lombok.SneakyThrows;
-import org.netsim.util.ClassLoaderUtil;
+import org.netsim.util.ClassUtil;
 
 import java.util.Set;
 
 public abstract class Model {
-    private static final Set<Class<? extends Model>> extendingClasses = ClassLoaderUtil.collectExtendingClasses(Model.class, "org.netsim.models");
+    private static final Set<Class<? extends Model>> extendingClasses = ClassUtil.collectExtendingClasses(Model.class, "org.netsim.models");
     public static String modelId = "Choose a model";
 
     public Model() {

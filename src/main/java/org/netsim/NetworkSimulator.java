@@ -5,7 +5,7 @@ import org.netsim.ui.GUIApplication;
 
 public class NetworkSimulator {
 
-    private static boolean runWithGui = true;
+    public static boolean runWithGui = true;
 
     public static void main(String[] args) {
         for (String item: args) {

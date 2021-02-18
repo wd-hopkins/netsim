@@ -11,9 +11,8 @@ public class ObservableQueue<E> extends AbstractQueue<E> {
         this.delegate = delegate;
     }
 
-    public ObservableQueue<E> registerListener(Listener<E> listener) {
+    public void registerListener(Listener<E> listener) {
         listeners.add(listener);
-        return this;
     }
 
     @Override
