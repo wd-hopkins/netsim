@@ -11,6 +11,7 @@ hs_err_pid*
 *.iml
 
 /build/
+my-network/
 nbactions.xml
 nb-configuration.xml
 
