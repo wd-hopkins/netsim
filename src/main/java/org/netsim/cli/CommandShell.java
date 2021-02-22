@@ -88,22 +88,31 @@ public class CommandShell {
             return;
         }
 
-        File workingDir = new File(dir);
-        try {
-            if (workingDir.exists() && workingDir.isDirectory()) {
-                runner.setWorkingDirectory(workingDir);
-                return;
-            } else {
-                System.out.println("Selection Invalid.");
-            }
-        } catch (SecurityException e) {
-            System.out.println("Permission Denied.");
+        if (changeDir(dir)) {
+            return;
         }
         getWorkingDirectory();
     }
 
+    static boolean changeDir(String dir) {
+        File workingDir = new File(dir);
+        try {
+            if (workingDir.exists() && workingDir.isDirectory()) {
+                runner.setWorkingDirectory(workingDir);
+                return true;
+            } else {
+                System.out.println("Selection Invalid.");
+                return false;
+            }
+        } catch (SecurityException e) {
+            System.out.println("Permission Denied.");
+            return false;
+        }
+    }
+
     @Command(name = "",
             subcommands = {
+                    CdCommand.class,
                     ClearScreen.class,
                     HelpCommand.class,
                     SelectCommand.class,
