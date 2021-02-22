@@ -58,7 +58,7 @@ public class Node {
             gate.connection = inputGate;
             inputGate.connection = gate;
         } else {
-            throw new IllegalArgumentException("Invalid gate name: " + outName);
+            throw new IllegalArgumentException("Gate not defined: " + outName);
         }
     }
 
@@ -107,4 +107,8 @@ public class Node {
         }
     }
 
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }

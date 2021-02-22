@@ -46,9 +46,13 @@ public abstract class Model {
             Node out = getNodeByName(leftSide[0]);
             Node in = getNodeByName(rightSide[0]);
             if (out != null && in != null) {
-                out.connect(leftSide[1], in.getInputGateByName(rightSide[1]));
+                if (in.getInputGateByName(rightSide[1]) != null) {
+                    out.connect(leftSide[1], in.getInputGateByName(rightSide[1]));
+                } else {
+                    throw new IllegalArgumentException("Gate not defined: " + rightSide[1]);
+                }
             } else {
-                throw new IllegalArgumentException("Node does not exist: " + ((out == null) ? leftSide[0] : rightSide[0]));
+                throw new IllegalArgumentException("Node not defined: " + ((out == null) ? leftSide[0] : rightSide[0]));
             }
         });
     }

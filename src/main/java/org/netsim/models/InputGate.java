@@ -9,7 +9,7 @@ public class InputGate {
 
     private final @Getter String name;
     public ObservableQueue<Object> buffer = new ObservableQueue<>(new LinkedList<>());
-    public OutputGate connection;
+    public OutputGate connection = null;
 
     public InputGate(String name) {
         this.name = name;

@@ -5,7 +5,7 @@ import lombok.Getter;
 public class OutputGate {
 
     private final @Getter String name;
-    public InputGate connection;
+    public InputGate connection = null;
 
     public OutputGate(String name) {
         this.name = name;
