@@ -1,16 +1,18 @@
 package org.netsim.models;
 
+import lombok.Getter;
 import org.netsim.util.ObservableQueue;
 
 import java.util.LinkedList;
 
 public class InputGate {
 
-    public OutputGate connection;
+    private final @Getter String name;
     public ObservableQueue<Object> buffer = new ObservableQueue<>(new LinkedList<>());
+    public OutputGate connection;
 
-    public InputGate() {
-
+    public InputGate(String name) {
+        this.name = name;
     }
 
     public Object poll() {

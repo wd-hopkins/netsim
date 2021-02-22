@@ -15,14 +15,14 @@ public class UserImpl extends Node {
 
     @Override
     public void init() {
-        send(String.format("Initial Message #%d", currMessage++));
+        send(String.format("Initial Message #%d", currMessage++), "out");
     }
 
     @Override
     public void onReceive(Object message) {
         System.out.printf("[%s][%s] Received: %s\n", LocalTime.now(), this.name, message);
         if (currMessage <= maxMessages) {
-            send(String.format("Message #%d", currMessage++));
+            send(String.format("Message #%d", currMessage++), "out");
         }
     }
 }

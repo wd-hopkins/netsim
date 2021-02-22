@@ -5,6 +5,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.netsim.models.ClientServerModel;
 
+import java.io.File;
+
 public class ModelTest {
 
     public static ModelRunner runner;
@@ -13,13 +15,13 @@ public class ModelTest {
     static void setup() {
         NetworkSimulator.runWithGui = false;
         runner = new ModelRunner();
+        runner.setWorkingDirectory(new File(runner.getWorkingDirectory(), "my-network"));
+        runner.setSelectedModel(new ClientServerModel());
     }
 
     @Test
     public void testNullMessagesDoNotExist() {
-        assert(true);
-//        runner.setSelectedModel(new ClientServerModel());
-//        runner.run();
+        //runner.run();
     }
 
     @AfterAll

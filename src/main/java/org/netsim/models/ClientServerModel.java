@@ -6,8 +6,6 @@ import org.netsim.util.ClassUtil;
 public class ClientServerModel extends Model {
 
     public static String modelId = "clientserver";
-    private Node server;
-    private Node client;
 
     public ClientServerModel() {
 
@@ -16,10 +14,12 @@ public class ClientServerModel extends Model {
     @Override
     @SneakyThrows
     public void init(Class<?> nodeImpl) {
-        server = (Node) ClassUtil.instantiate(nodeImpl, "Server");
-        client = (Node) ClassUtil.instantiate(nodeImpl, "Client");
-        server.connect(client.getIn());
-        client.connect(server.getIn());
+        Node server = (Node) ClassUtil.instantiate(nodeImpl, "Server");
+        Node client = (Node) ClassUtil.instantiate(nodeImpl, "Client");
+        server.connect("out", client.getIn().get(0));
+        client.connect("out", server.getIn().get(0));
+        nodes.add(server);
+        nodes.add(client);
     }
 
     @Override
@@ -29,7 +29,7 @@ public class ClientServerModel extends Model {
 
     @Override
     public void run() {
-        client.init();
+        nodes.get(0).init();
     }
 
     @Override
