@@ -11,7 +11,7 @@ import java.util.Set;
 public abstract class Model {
     private static final Set<Class<? extends Model>> extendingClasses = ClassUtil.collectExtendingClasses(Model.class, "org.netsim.models");
     public static String modelId = "Choose a model";
-    public List<Node> nodes = new ArrayList<>();
+    protected List<Node> nodes = new ArrayList<>();
 
     public Model() {
 
@@ -33,13 +33,18 @@ public abstract class Model {
         init(Node.class);
     }
 
+    public void init(List<Node> nodes, Map<String, String> connections) {
+        this.nodes = nodes;
+        this.applyConnections(connections);
+    }
+
     public abstract void init(Class<?> nodeImpl);
 
     public abstract void onSelect();
 
     public abstract void run();
 
-    public void applyConnections(Map<String, String> connections) {
+    protected void applyConnections(Map<String, String> connections) {
         connections.forEach((k, v) -> {
             String[] leftSide = k.split("\\.");
             String[] rightSide = v.split("\\.");
@@ -58,7 +63,7 @@ public abstract class Model {
     }
 
     public Node getNodeByName(String name) {
-        for (Node node: nodes) {
+        for (Node node : nodes) {
             if (node.name.equals(name)) {
                 return node;
             }

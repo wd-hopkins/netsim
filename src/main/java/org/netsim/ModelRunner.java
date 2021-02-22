@@ -38,7 +38,6 @@ public class ModelRunner {
             System.err.println("Configuration file not found.");
         }
 
-        Class<?> cls = Node.class;
         if (config != null) {
             Map<File, NetworkConfig.Gate> configTypes = config.validateTypes(workingDirectory);
             List<NetworkConfig.Node> configNodes = config.validateNodes();
@@ -70,8 +69,7 @@ public class ModelRunner {
             if (nodes.size() != configNodes.size()) {
                 throw new Exception("Could not create one or more nodes. Check your config file.");
             }
-            this.selectedModel.nodes = nodes;
-            this.selectedModel.applyConnections(configConnections);
+            this.selectedModel.init(nodes, configConnections);
         } else {
             this.threadPool = Executors.newFixedThreadPool(1);
             this.selectedModel.init();
