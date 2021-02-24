@@ -16,12 +16,12 @@ import java.util.Map;
 
 public class NetworkConfig {
     private @Getter @Setter List<Type> types;
-    private @Getter @Setter List<Node> nodes;
+    private @Getter @Setter Map<String, String> nodes;
     private @Getter @Setter Map<String, String> connections;
 
     public NetworkConfig() {}
 
-    public NetworkConfig(List<Type> types, List<Node> nodes, Map<String, String> connections) {
+    public NetworkConfig(List<Type> types, Map<String, String> nodes, Map<String, String> connections) {
         this.types = types;
         this.nodes = nodes;
         this.connections = connections;
@@ -41,18 +41,6 @@ public class NetworkConfig {
         return typeFiles;
     }
 
-    List<Node> validateNodes() throws NameAlreadyBoundException {
-        List<String> names = new ArrayList<>();
-        for (Node node: nodes) {
-            if (!names.contains(node.getName())) {
-                names.add(node.getName());
-            } else {
-                throw new NameAlreadyBoundException("Duplicate node name: " + node.getName());
-            }
-        }
-        return nodes;
-    }
-
     public static class Type {
         private @Getter @Setter String name;
         private @Getter @Setter Gate gates;
@@ -61,10 +49,5 @@ public class NetworkConfig {
     public static class Gate {
         private @Getter @Setter List<String> input;
         private @Getter @Setter List<String> output;
-    }
-
-    public static class Node {
-        private @Getter @Setter String name;
-        private @Getter @Setter String type;
     }
 }

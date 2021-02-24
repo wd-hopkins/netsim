@@ -9,14 +9,11 @@ types:
       output: [ out ]
 
 nodes:
-  - name: server
-    type: UserImpl
-  - name: client
-    type: UserImpl
-  - name: client1
-    type: Doubler
+  server: UserImpl
+  client: UserImpl
+  client1: Doubler
 
 connections:
-    server.out: client.in
-    client.out: client1.in
-    client1.out: server.in
+  server.out: client.in
+  client.out: client1.in
+  client1.out: server.in

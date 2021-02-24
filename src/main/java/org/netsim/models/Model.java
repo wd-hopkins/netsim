@@ -44,7 +44,7 @@ public abstract class Model {
 
     public abstract void run();
 
-    protected void applyConnections(Map<String, String> connections) {
+    private void applyConnections(Map<String, String> connections) {
         connections.forEach((k, v) -> {
             String[] leftSide = k.split("\\.");
             String[] rightSide = v.split("\\.");

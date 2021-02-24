@@ -40,7 +40,7 @@ public class ModelRunner {
 
         if (config != null) {
             Map<File, NetworkConfig.Gate> configTypes = config.validateTypes(workingDirectory);
-            List<NetworkConfig.Node> configNodes = config.validateNodes();
+            Map<String, String> configNodes = config.getNodes();
             Map<String, String> configConnections = config.getConnections();
             this.threadPool = Executors.newFixedThreadPool(configNodes.size());
 
@@ -56,16 +56,14 @@ public class ModelRunner {
             }
 
             List<Node> nodes = new ArrayList<>();
-            for (NetworkConfig.Node node : configNodes) {
-                classes.forEach((k, v) -> {
-                    if (k.getName().equals(node.getType())) {
-                        Node n = (Node) ClassUtil.instantiate(k, node.getName());
-                        n.createInGates(v.getInput());
-                        n.createOutGates(v.getOutput());
-                        nodes.add(n);
-                    }
-                });
-            }
+            configNodes.forEach((name, type) -> classes.forEach((clazz, gates) -> {
+                if (clazz.getName().equals(type)) {
+                    Node n = (Node) ClassUtil.instantiate(clazz, name);
+                    n.createInGates(gates.getInput());
+                    n.createOutGates(gates.getOutput());
+                    nodes.add(n);
+                }
+            }));
             if (nodes.size() != configNodes.size()) {
                 throw new Exception("Could not create one or more nodes. Check your config file.");
             }
