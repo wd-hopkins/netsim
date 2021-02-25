@@ -32,7 +32,7 @@ public class Node {
         this.in.forEach(x -> x.addListener(e -> this.threadPool.submit(() -> this.onReceive(x.poll()))));
     }
 
-    public void createInGates(List<String> gates) {
+    public final void createInGates(List<String> gates) {
         List<InputGate> newGates = new ArrayList<>();
         for (String name : gates) {
             newGates.add(new InputGate(name));
@@ -41,7 +41,7 @@ public class Node {
         addListeners();
     }
 
-    public void createOutGates(List<String> gates) {
+    public final void createOutGates(List<String> gates) {
         List<OutputGate> newGates = new ArrayList<>();
         for (String name : gates) {
             newGates.add(new OutputGate(name));
@@ -52,7 +52,7 @@ public class Node {
     /**
      * Connect output gate of this node to the input gate of another node.
      */
-    public void connect(String outName, InputGate inputGate) {
+    public final void connect(String outName, InputGate inputGate) {
         OutputGate gate = getOutputGateByName(outName);
         if (gate != null) {
             gate.connection = inputGate;
@@ -62,7 +62,7 @@ public class Node {
         }
     }
 
-    public OutputGate getOutputGateByName(String name) {
+    public final OutputGate getOutputGateByName(String name) {
         for (OutputGate gate : out) {
             if (gate.getName().equals(name)) {
                 return gate;
@@ -71,7 +71,7 @@ public class Node {
         return null;
     }
 
-    public InputGate getInputGateByName(String name) {
+    public final InputGate getInputGateByName(String name) {
         for (InputGate gate : in) {
             if (gate.getName().equals(name)) {
                 return gate;
@@ -81,24 +81,24 @@ public class Node {
     }
 
     public void init() {
-        send("You must have a file in the current directory that overrides the receive method of the Node class.");
+        send("Please override the init method of the Node superclass.");
     }
 
     public void onReceive(Object message) {
         System.out.printf("[%s] Received: %s\n", this.name, message);
     }
 
-    public void send(Object message) {
+    protected final void send(Object message) {
         this.out.forEach(x -> x.send(message));
     }
 
     @SneakyThrows
-    public void send(Object message, long delay) {
+    protected final void send(Object message, long delay) {
         Thread.sleep(delay);
         send(message);
     }
 
-    public void send(Object message, String gateName) {
+    protected final void send(Object message, String gateName) {
         OutputGate gate = getOutputGateByName(gateName);
         if (gate != null) {
             gate.send(message);

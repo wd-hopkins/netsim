@@ -10,11 +10,11 @@ import java.util.Set;
 
 public abstract class Model {
     private static final Set<Class<? extends Model>> extendingClasses = ClassUtil.collectExtendingClasses(Model.class, "org.netsim.models");
-    public static String modelId = "Choose a model";
+    public String modelId;
     protected List<Node> nodes = new ArrayList<>();
 
     public Model() {
-
+        this.modelId = "Choose a model";
     }
 
     @SneakyThrows

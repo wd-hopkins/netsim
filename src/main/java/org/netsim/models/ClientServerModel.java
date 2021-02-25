@@ -5,10 +5,8 @@ import org.netsim.util.ClassUtil;
 
 public class ClientServerModel extends Model {
 
-    public static String modelId = "clientserver";
-
     public ClientServerModel() {
-
+        this.modelId = "clientserver";
     }
 
     @Override
@@ -30,11 +28,6 @@ public class ClientServerModel extends Model {
     @Override
     public void run() {
         nodes.get(0).init();
-    }
-
-    @Override
-    public String toString() {
-        return modelId;
     }
 
 }
