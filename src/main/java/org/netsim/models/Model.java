@@ -19,14 +19,16 @@ public abstract class Model {
 
     @SneakyThrows
     public static Model getExtendingClassById(String id) {
+        boolean success = false;
         Model m = null;
         for (Class<? extends Model> model : extendingClasses) {
-            if (id.equals(model.getField("modelId").get(null))) {
-                m = model.getDeclaredConstructor().newInstance();
+            m = model.getDeclaredConstructor().newInstance();
+            if (m.modelId.equals(id)) {
+                success = true;
                 break;
             }
         }
-        return m;
+        return success ? m : null;
     }
 
     public void init() {
