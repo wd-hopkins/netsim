@@ -12,13 +12,8 @@ public class EmptyModel extends Model {
     }
 
     @Override
-    public void onSelect() {
-        System.out.println("Choose a model first");
-    }
-
-    @Override
     public void run() {
-        onSelect();
+        System.out.println("Choose a model first");
     }
 
 }

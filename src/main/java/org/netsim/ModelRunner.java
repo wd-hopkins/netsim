@@ -1,5 +1,6 @@
 package org.netsim;
 
+import javassist.compiler.CompileError;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -53,6 +54,8 @@ public class ModelRunner {
                     }
                     classes.put(userImpl, v);
                 });
+            } else {
+                throw new CompileError("There was an error during compilation.");
             }
 
             List<Node> nodes = new ArrayList<>();

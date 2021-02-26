@@ -1,5 +1,6 @@
 package org.netsim.models;
 
+import lombok.Getter;
 import lombok.SneakyThrows;
 import org.netsim.util.ClassUtil;
 
@@ -9,26 +10,30 @@ import java.util.Map;
 import java.util.Set;
 
 public abstract class Model {
-    private static final Set<Class<? extends Model>> extendingClasses = ClassUtil.collectExtendingClasses(Model.class, "org.netsim.models");
-    public String modelId;
+    private static final @Getter Set<Class<? extends Model>> extendingClasses;
+    public static String modelId = "Choose a model";
     protected List<Node> nodes = new ArrayList<>();
 
+    static {
+        extendingClasses = ClassUtil.collectExtendingClasses(Model.class, "org.netsim.models");
+        extendingClasses.remove(EmptyModel.class);
+    }
+
     public Model() {
-        this.modelId = "Choose a model";
+
     }
 
     @SneakyThrows
     public static Model getExtendingClassById(String id) {
-        boolean success = false;
         Model m = null;
         for (Class<? extends Model> model : extendingClasses) {
-            m = model.getDeclaredConstructor().newInstance();
-            if (m.modelId.equals(id)) {
-                success = true;
+            String modelId = (String) model.getField("modelId").get(null);
+            if (id.equals(modelId) || id.equals(modelId.toLowerCase())) {
+                m = model.getDeclaredConstructor().newInstance();
                 break;
             }
         }
-        return success ? m : null;
+        return m;
     }
 
     public void init() {
@@ -41,8 +46,6 @@ public abstract class Model {
     }
 
     public abstract void init(Class<?> nodeImpl);
-
-    public abstract void onSelect();
 
     public abstract void run();
 

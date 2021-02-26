@@ -2,8 +2,11 @@ package org.netsim.models;
 
 public class SynchronousModel extends Model {
 
+    public static String modelId = "Synchronous";
+    public float threshold;
+
     public SynchronousModel() {
-        this.modelId = "synchronous";
+
     }
 
     @Override
@@ -12,12 +15,12 @@ public class SynchronousModel extends Model {
     }
 
     @Override
-    public void onSelect() {
-
+    public void run() {
+        nodes.get(0).init();
     }
 
     @Override
-    public void run() {
-        nodes.get(0).init();
+    public String toString() {
+        return modelId;
     }
 }

@@ -5,8 +5,10 @@ import org.netsim.util.ClassUtil;
 
 public class ClientServerModel extends Model {
 
+    public static String modelId = "ClientServer";
+
     public ClientServerModel() {
-        this.modelId = "clientserver";
+
     }
 
     @Override
@@ -21,13 +23,12 @@ public class ClientServerModel extends Model {
     }
 
     @Override
-    public void onSelect() {
-        System.out.println(this.toString());
-    }
-
-    @Override
     public void run() {
         nodes.get(0).init();
     }
 
+    @Override
+    public String toString() {
+        return modelId;
+    }
 }
