@@ -4,6 +4,8 @@ import javassist.compiler.CompileError;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import org.jline.utils.AttributedStringBuilder;
+import org.jline.utils.AttributedStyle;
 import org.netsim.models.EmptyModel;
 import org.netsim.models.Model;
 import org.netsim.models.Node;
@@ -30,7 +32,13 @@ public class ModelRunner {
 
     @SneakyThrows
     public void run() {
-        System.out.printf("Beginning simulation of model %s\n", this.selectedModel);
+        System.out.println(new AttributedStringBuilder()
+                .style(AttributedStyle.DEFAULT)
+                .append("Beginning simulation of model: ")
+                .style(AttributedStyle.DEFAULT.foreground(AttributedStyle.BLUE))
+                .append(this.selectedModel.toString())
+                .toAnsi()
+        );
 
         NetworkConfig config = null;
         try {

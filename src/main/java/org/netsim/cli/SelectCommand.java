@@ -15,7 +15,9 @@ public class SelectCommand implements Runnable {
     @Override
     public void run() {
         if (model == null) {
-            System.out.println("Unable to select model.");
+            CommandShell.printErr("Unable to select model.");
+        } else if (model.getClass() == CommandShell.getRunner().getSelectedModel().getClass()){
+            CommandShell.printErr("Model already selected.");
         } else {
             CommandShell.getRunner().setSelectedModel(model);
         }

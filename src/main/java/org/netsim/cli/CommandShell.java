@@ -9,6 +9,8 @@ import org.jline.reader.*;
 import org.jline.reader.impl.DefaultParser;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
+import org.jline.utils.AttributedStringBuilder;
+import org.jline.utils.AttributedStyle;
 import org.netsim.ModelRunner;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
@@ -108,6 +110,13 @@ public class CommandShell {
             System.out.println("Permission Denied.");
             return false;
         }
+    }
+
+    static void printErr(String str) {
+        System.out.println(new AttributedStringBuilder()
+                .style(AttributedStyle.DEFAULT.foreground(AttributedStyle.RED))
+                .append(str)
+                .toAnsi());
     }
 
     @Command(name = "",
