@@ -18,22 +18,29 @@ public class SetCommand implements Runnable {
 
     @SneakyThrows
     @Override
-    public void run() { //TODO: set value based on type
+    public void run() {
         Model selectedModel = CommandShell.getRunner().getSelectedModel();
         Class<? extends Model> clazz = selectedModel.getClass();
         if (clazz == EmptyModel.class) {
             CommandShell.printErr("Select a model first");
+            return;
         }
 
         option.forEach((k, v) -> {
-            Field field;
-            try {
-                field = clazz.getDeclaredField(k);
-            } catch (NoSuchFieldException e) {
-                CommandShell.printErr("No such field: " + k);
-                return;
+            Field field = null;
+            for (Field f: clazz.getDeclaredFields()) {
+                if (f.isAnnotationPresent(Option.class)) {
+                    if (!f.getAnnotation(Option.class).name().equals("")) {
+                        if (f.getAnnotation(Option.class).name().equals(k))
+                            field = f;
+                            break;
+                    } else if (f.getName().equals(v)) {
+                        field = f;
+                        break;
+                    }
+                }
             }
-            if (field.isAnnotationPresent(Option.class)) {
+            if (field != null) {
                 field.setAccessible(true);
                 String fieldType = field.getType().getName();
                 try {
@@ -65,7 +72,7 @@ public class SetCommand implements Runnable {
                 } catch(IllegalArgumentException e) {
                     CommandShell.printErr("Invalid type. Option has type: " + fieldType);
                 } catch (IllegalAccessException ignored) {}
-
+                field.setAccessible(false);
             } else {
                 CommandShell.printErr("No such field: " + k);
             }

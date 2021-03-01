@@ -41,10 +41,12 @@ public class ShowCommand implements Runnable {
         }
 
         for (Field field: options) {
+            String annotatedName = field.getAnnotation(Option.class).name();
+            String name = annotatedName.equals("") ? field.getName() : annotatedName;
             field.setAccessible(true);
             String option = new AttributedStringBuilder()
                     .style(AttributedStyle.BOLD)
-                    .append(field.getName())
+                    .append(name)
                     .style(AttributedStyle.DEFAULT)
                     .append(" = ")
                     .append(field.get(selectedModel).toString())

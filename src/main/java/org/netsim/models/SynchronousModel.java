@@ -5,11 +5,12 @@ import org.netsim.cli.Option;
 public class SynchronousModel extends Model {
 
     public static String modelId = "Synchronous";
-    @Option(description = "Time (ms) that messages are guaranteed to arrive by.")
-    private int threshold;
+    @Option(name = "max_transmission_delay",
+            description = "Time (ms) that messages are guaranteed to arrive by.")
+    private int delay;
 
     public SynchronousModel() {
-        this.threshold = 0;
+        this.delay = 0;
     }
 
     @Override

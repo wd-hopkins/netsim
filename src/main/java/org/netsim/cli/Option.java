@@ -11,5 +11,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface Option {
+    String name() default "";
     String description() default "";
 }
