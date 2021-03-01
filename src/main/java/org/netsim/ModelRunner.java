@@ -13,10 +13,7 @@ import org.netsim.util.ClassUtil;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -81,7 +78,7 @@ public class ModelRunner {
             this.selectedModel.init(nodes, configConnections);
         } else {
             this.threadPool = Executors.newScheduledThreadPool(1);
-            this.selectedModel.init();
+            this.selectedModel.init(new ArrayList<>(Collections.singletonList(new Node("Node"))), new HashMap<>(Collections.singletonMap("Node.out","Node.in")));
         }
 
         this.selectedModel.run();

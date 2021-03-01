@@ -36,16 +36,10 @@ public abstract class Model {
         return m;
     }
 
-    public void init() {
-        init(Node.class);
-    }
-
     public void init(List<Node> nodes, Map<String, String> connections) {
         this.nodes = nodes;
         this.applyConnections(connections);
     }
-
-    public abstract void init(Class<?> nodeImpl);
 
     public abstract void run();
 
