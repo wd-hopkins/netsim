@@ -20,6 +20,7 @@ public class SynchronousModel extends Model {
 
     @Override
     public void run() {
+        this.nodes.forEach(node -> node.setDelay(this.delay));
         nodes.get(0).init();
     }
 

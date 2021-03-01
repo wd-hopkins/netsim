@@ -1,7 +1,7 @@
 package org.netsim.models;
 
 import lombok.Getter;
-import lombok.SneakyThrows;
+import lombok.Setter;
 import org.netsim.cli.CommandShell;
 import org.netsim.ui.GUIApplication;
 import org.netsim.util.ClassUtil;
@@ -9,27 +9,29 @@ import org.netsim.util.ClassUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class Node {
 
     private final Class<?> context;
-    private final ExecutorService threadPool;
-    public String name;
+    private final ScheduledExecutorService threadPool;
+    private @Setter long delay;
     protected @Getter List<InputGate> in;
     protected @Getter List<OutputGate> out;
+    public String name;
 
     public Node(String name) {
         this.in = Collections.singletonList(new InputGate("in"));
         this.out = Collections.singletonList(new OutputGate("out"));
         this.context = ClassUtil.getContextClass();
         this.threadPool = context == CommandShell.class ? CommandShell.getRunner().getThreadPool() : GUIApplication.getRunner().getThreadPool();
+        this.delay = 0;
         this.name = name;
         addListeners();
     }
 
     private void addListeners() {
-        this.in.forEach(x -> x.addListener(e -> this.threadPool.submit(() -> this.onReceive(x.poll()))));
+        this.in.forEach(x -> x.addListener(e -> this.onReceive(x.poll())));
     }
 
     public final void createInGates(List<String> gates) {
@@ -89,19 +91,21 @@ public class Node {
     }
 
     protected final void send(Object message) {
-        this.out.forEach(x -> x.send(message));
+        send(message, this.delay);
     }
 
-    @SneakyThrows
     protected final void send(Object message, long delay) {
-        Thread.sleep(delay);
-        send(message);
+        this.out.forEach(x -> x.send(message, this.threadPool, delay));
     }
 
     protected final void send(Object message, String gateName) {
+        send(message, gateName, this.delay);
+    }
+
+    protected final void send(Object message, String gateName, long delay) {
         OutputGate gate = getOutputGateByName(gateName);
         if (gate != null) {
-            gate.send(message);
+            gate.send(message, this.threadPool, delay);
         } else {
             throw new IllegalArgumentException("Invalid gate name: " + gateName);
         }

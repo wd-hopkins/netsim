@@ -17,12 +17,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class ModelRunner {
 
-    private @Getter ExecutorService threadPool;
+    private @Getter ScheduledExecutorService threadPool;
     private @Getter @Setter File workingDirectory = new File(System.getProperty("user.dir"));
     private @Getter @Setter Model selectedModel;
 
@@ -51,7 +51,7 @@ public class ModelRunner {
             Map<File, NetworkConfig.Gate> configTypes = config.validateTypes(workingDirectory);
             Map<String, String> configNodes = config.getNodes();
             Map<String, String> configConnections = config.getConnections();
-            this.threadPool = Executors.newFixedThreadPool(configNodes.size());
+            this.threadPool = Executors.newScheduledThreadPool(configNodes.size());
 
             Map<Class<?>, NetworkConfig.Gate> classes = new HashMap<>();
             if (ClassUtil.compileJavaClass(configTypes.keySet().toArray(new File[0]))) {
@@ -80,7 +80,7 @@ public class ModelRunner {
             }
             this.selectedModel.init(nodes, configConnections);
         } else {
-            this.threadPool = Executors.newFixedThreadPool(1);
+            this.threadPool = Executors.newScheduledThreadPool(1);
             this.selectedModel.init();
         }
 
