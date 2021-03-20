@@ -15,11 +15,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 public class ModelRunner {
 
-    private @Getter ScheduledExecutorService threadPool;
+    private @Getter ScheduledThreadPoolExecutor threadPool;
     private @Getter @Setter File workingDirectory = new File(System.getProperty("user.dir"));
     private @Getter @Setter Model selectedModel;
 
@@ -48,7 +48,7 @@ public class ModelRunner {
             Map<File, NetworkConfig.Gate> configTypes = config.validateTypes(workingDirectory);
             Map<String, String> configNodes = config.getNodes();
             Map<String, String> configConnections = config.getConnections();
-            this.threadPool = Executors.newScheduledThreadPool(configNodes.size());
+            this.threadPool = (ScheduledThreadPoolExecutor) Executors.newScheduledThreadPool(configNodes.size());
 
             Map<Class<?>, NetworkConfig.Gate> classes = new HashMap<>();
             if (ClassUtil.compileJavaClass(configTypes.keySet().toArray(new File[0]))) {
@@ -77,14 +77,14 @@ public class ModelRunner {
             }
             this.selectedModel.init(nodes, configConnections);
         } else {
-            this.threadPool = Executors.newScheduledThreadPool(1);
+            this.threadPool = (ScheduledThreadPoolExecutor) Executors.newScheduledThreadPool(1);
             this.selectedModel.init(new ArrayList<>(Collections.singletonList(new Node("Node"))), new HashMap<>(Collections.singletonMap("Node.out","Node.in")));
         }
 
         this.selectedModel.run();
         //TODO: Keep track of scheduled events in order to determine if the simulation has concluded
-        Thread.sleep(1000);
+        //Thread.sleep(1000);
         System.out.println("End of simulation");
-        threadPool.shutdown();
+        //threadPool.shutdown();
     }
 }

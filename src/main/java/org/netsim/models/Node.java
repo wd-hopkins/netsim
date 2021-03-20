@@ -1,7 +1,6 @@
 package org.netsim.models;
 
 import lombok.Getter;
-import lombok.Setter;
 import org.netsim.cli.CommandShell;
 import org.netsim.ui.GUIApplication;
 import org.netsim.util.ClassUtil;
@@ -15,7 +14,6 @@ public class Node {
 
     private final Class<?> context;
     private final ScheduledExecutorService threadPool;
-    private @Setter long delay;
     protected @Getter List<InputGate> in;
     protected @Getter List<OutputGate> out;
     public String name;
@@ -25,7 +23,6 @@ public class Node {
         this.out = Collections.singletonList(new OutputGate("out"));
         this.context = ClassUtil.getContextClass();
         this.threadPool = context == CommandShell.class ? CommandShell.getRunner().getThreadPool() : GUIApplication.getRunner().getThreadPool();
-        this.delay = 0;
         this.name = name;
         addListeners();
     }
@@ -56,12 +53,8 @@ public class Node {
      */
     public final void connect(String outName, InputGate inputGate) {
         OutputGate gate = getOutputGateByName(outName);
-        if (gate != null) {
-            gate.connection = inputGate;
-            inputGate.connection = gate;
-        } else {
-            throw new IllegalArgumentException("Gate not defined: " + outName);
-        }
+        gate.connection = inputGate;
+        inputGate.connection = gate;
     }
 
     public final OutputGate getOutputGateByName(String name) {
@@ -70,7 +63,7 @@ public class Node {
                 return gate;
             }
         }
-        return null;
+        throw new IllegalArgumentException("Gate not defined: " + name);
     }
 
     public final InputGate getInputGateByName(String name) {
@@ -79,7 +72,7 @@ public class Node {
                 return gate;
             }
         }
-        return null;
+        throw new IllegalArgumentException("Gate not defined: " + name);
     }
 
     public void init() {
@@ -90,8 +83,17 @@ public class Node {
         System.out.printf("[%s] Received: %s\n", this.name, message);
     }
 
+    public void setDelay(long delay) {
+        this.out.forEach(x -> x.setDelay(delay));
+    }
+
+    public void setDelay(String name, long delay) {
+        OutputGate out = getOutputGateByName(name);
+        out.setDelay(delay);
+    }
+
     protected final void send(Object message) {
-        send(message, this.delay);
+        this.out.forEach(x -> x.send(message, this.threadPool));
     }
 
     protected final void send(Object message, long delay) {
@@ -99,16 +101,13 @@ public class Node {
     }
 
     protected final void send(Object message, String gateName) {
-        send(message, gateName, this.delay);
+        OutputGate gate = getOutputGateByName(gateName);
+        gate.send(message, this.threadPool);
     }
 
     protected final void send(Object message, String gateName, long delay) {
         OutputGate gate = getOutputGateByName(gateName);
-        if (gate != null) {
-            gate.send(message, this.threadPool, delay);
-        } else {
-            throw new IllegalArgumentException("Invalid gate name: " + gateName);
-        }
+        gate.send(message, this.threadPool, delay);
     }
 
     @Override

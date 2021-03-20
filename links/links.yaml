@@ -1,0 +1,13 @@
+types:
+  - name: CustomLink
+    gates:
+      input: [ in ]
+      output: [ out ]
+
+nodes:
+  async: CustomLink
+  sync: CustomLink
+
+connections:
+  async.out: sync.in
+  sync.out: async.in -> 500

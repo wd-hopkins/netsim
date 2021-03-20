@@ -4,10 +4,9 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import org.netsim.util.ClassUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public abstract class Model {
     private static final @Getter Set<Class<? extends Model>> extendingClasses;
@@ -46,17 +45,17 @@ public abstract class Model {
     private void applyConnections(Map<String, String> connections) {
         connections.forEach((k, v) -> {
             String[] leftSide = k.split("\\.");
-            String[] rightSide = v.split("\\.");
-            Node out = getNodeByName(leftSide[0]);
-            Node in = getNodeByName(rightSide[0]);
-            if (out != null && in != null) {
-                if (in.getInputGateByName(rightSide[1]) != null) {
-                    out.connect(leftSide[1], in.getInputGateByName(rightSide[1]));
-                } else {
-                    throw new IllegalArgumentException("Gate not defined: " + rightSide[1]);
-                }
-            } else {
-                throw new IllegalArgumentException("Node not defined: " + ((out == null) ? leftSide[0] : rightSide[0]));
+            String[] rightSide = v.split("(\\.|->)");
+
+            Node out = getNodeByName(leftSide[0].trim());
+            Node in = getNodeByName(rightSide[0].trim());
+            InputGate inGate = in.getInputGateByName(rightSide[1].trim());
+            out.connect(leftSide[1], inGate);
+
+            if (rightSide.length > 3) {
+                throw new IllegalArgumentException("Unexpected number of options.");
+            } else if (rightSide.length == 3) {
+                out.setDelay(leftSide[1].trim(), Long.parseLong(rightSide[2].trim()));
             }
         });
     }
@@ -67,7 +66,7 @@ public abstract class Model {
                 return node;
             }
         }
-        return null;
+        throw new IllegalArgumentException("Node not defined: " + name);
     }
 
     @Override
