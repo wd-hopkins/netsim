@@ -20,6 +20,7 @@ import picocli.shell.jline3.PicocliCommands.ClearScreen;
 import picocli.shell.jline3.PicocliCommands.PicocliCommandsFactory;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -97,16 +98,17 @@ public class CommandShell {
     }
 
     static boolean changeDir(String dir) {
-        File workingDir = new File(dir);
+        File workingDir = new File(runner.getWorkingDirectory(), dir);
         try {
             if (workingDir.exists() && workingDir.isDirectory()) {
                 runner.setWorkingDirectory(workingDir);
+                System.setProperty("user.dir", workingDir.getCanonicalPath());
                 return true;
             } else {
                 System.out.println("Selection Invalid.");
                 return false;
             }
-        } catch (SecurityException e) {
+        } catch (SecurityException | IOException e) {
             System.out.println("Permission Denied.");
             return false;
         }
@@ -128,7 +130,8 @@ public class CommandShell {
                     RunCommand.class,
                     ShowCommand.class,
                     SetCommand.class,
-                    ListCommand.class
+                    ListCommand.class,
+                    PwdCommand.class
             })
     static class CliCommands implements Runnable {
         PrintWriter out;

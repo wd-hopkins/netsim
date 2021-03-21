@@ -4,9 +4,10 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import org.netsim.util.ClassUtil;
 
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public abstract class Model {
     private static final @Getter Set<Class<? extends Model>> extendingClasses;
@@ -47,7 +48,7 @@ public abstract class Model {
             String[] leftSide = k.split("\\.");
             String[] rightSide = v.split("(\\.|->)");
 
-            Node out = getNodeByName(leftSide[0].trim());
+            Node out = getNodeByName(leftSide[0]);
             Node in = getNodeByName(rightSide[0].trim());
             InputGate inGate = in.getInputGateByName(rightSide[1].trim());
             out.connect(leftSide[1], inGate);
@@ -55,7 +56,7 @@ public abstract class Model {
             if (rightSide.length > 3) {
                 throw new IllegalArgumentException("Unexpected number of options.");
             } else if (rightSide.length == 3) {
-                out.setDelay(leftSide[1].trim(), Long.parseLong(rightSide[2].trim()));
+                out.setDelay(leftSide[1], Long.parseLong(rightSide[2].trim()));
             }
         });
     }
