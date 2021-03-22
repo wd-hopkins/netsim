@@ -5,7 +5,7 @@ import org.netsim.cli.Option;
 public class SynchronousModel extends Model {
 
     public static String modelId = "Synchronous";
-    @Option(name = "max_transmission_delay",
+    @Option(name = "max_delay",
             description = "Time (ms) that messages are guaranteed to arrive by.")
     private int delay;
 

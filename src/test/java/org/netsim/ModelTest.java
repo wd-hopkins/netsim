@@ -3,7 +3,8 @@ package org.netsim;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.netsim.models.ClientServerModel;
+import org.netsim.cli.CommandShell;
+import org.netsim.models.PartialSynchronousModel;
 
 import java.io.File;
 
@@ -14,14 +15,14 @@ public class ModelTest {
     @BeforeAll
     static void setup() {
         NetworkSimulator.runWithGui = false;
-        runner = new ModelRunner();
-        runner.setWorkingDirectory(new File(runner.getWorkingDirectory(), "my-network"));
-        runner.setSelectedModel(new ClientServerModel());
+        runner = CommandShell.getRunner();
+        runner.setWorkingDirectory(new File(runner.getWorkingDirectory(), "links"));
+        runner.setSelectedModel(new PartialSynchronousModel());
     }
 
     @Test
-    public void testNullMessagesDoNotExist() {
-        //runner.run();
+    public void testModel() {
+        runner.run();
     }
 
     @AfterAll

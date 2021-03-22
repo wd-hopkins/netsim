@@ -31,9 +31,10 @@ public class SetCommand implements Runnable {
             for (Field f: clazz.getDeclaredFields()) {
                 if (f.isAnnotationPresent(Option.class)) {
                     if (!f.getAnnotation(Option.class).name().equals("")) {
-                        if (f.getAnnotation(Option.class).name().equals(k))
+                        if (f.getAnnotation(Option.class).name().equals(k)) {
                             field = f;
                             break;
+                        }
                     } else if (f.getName().equals(v)) {
                         field = f;
                         break;

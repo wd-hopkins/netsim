@@ -1,5 +1,7 @@
 import org.netsim.models.Node;
 
+import java.time.LocalTime;
+
 public class CustomLink extends Node {
 
     public CustomLink(String name) {
@@ -8,11 +10,12 @@ public class CustomLink extends Node {
 
     @Override
     public void init() {
-
+        send("Hello.", "out", 1000);
     }
 
     @Override
     public void onReceive(Object message) {
-
+        System.out.printf("[%s][%s] Received: %s\n", LocalTime.now(), this.name, message);
+        send(message, "out", 1000);
     }
 }

@@ -37,9 +37,6 @@ public class CommandShell {
         try {
             Supplier<Path> workDir = () -> Paths.get(runner.getWorkingDirectory().getAbsolutePath());
             Builtins builtins = new Builtins(workDir, null, null);
-            builtins.rename(Builtins.Command.TTOP, "top");
-            builtins.alias("zle", "widget");
-            builtins.alias("bindkey", "keymap");
             CliCommands commands = new CliCommands();
 
             PicocliCommandsFactory factory = new PicocliCommandsFactory();
@@ -67,8 +64,10 @@ public class CommandShell {
                         systemRegistry.cleanUp();
                         line = reader.readLine(prompt, null, (MaskingCallback) null, null);
                         systemRegistry.execute(line);
-                    } catch (UserInterruptException ignored) { // When user presses ctrl-c
-
+                    } catch (UserInterruptException e) { // When user presses ctrl-c
+                        if (runner.getThreadPool() != null) {
+                            runner.getThreadPool().shutdown();
+                        }
                     } catch (EndOfFileException e) { // When user presses ctrl-d
                         return;
                     } catch (Exception e) {
