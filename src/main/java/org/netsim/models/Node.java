@@ -14,8 +14,8 @@ public class Node {
 
     private final Class<?> context;
     private final ScheduledExecutorService threadPool;
-    protected @Getter List<InputGate> in;
-    protected @Getter List<OutputGate> out;
+    protected volatile @Getter List<InputGate> in;
+    protected volatile @Getter List<OutputGate> out;
     public String name;
 
     public Node(String name) {
@@ -28,7 +28,7 @@ public class Node {
     }
 
     private void addListeners() {
-        this.in.forEach(x -> x.addListener(e -> this.onReceive(x.poll())));
+        this.in.forEach(x -> x.setListener(e -> this.onReceive(x.poll())));
     }
 
     public final void createInGates(List<String> gates) {
@@ -73,6 +73,10 @@ public class Node {
             }
         }
         throw new IllegalArgumentException("Gate not defined: " + name);
+    }
+
+    public void halt() {
+        this.in.forEach(x -> x.setListener(e -> {}));
     }
 
     public void init() {

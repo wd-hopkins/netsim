@@ -10,12 +10,12 @@ public class CustomLink extends Node {
 
     @Override
     public void init() {
-        send("Hello.", "out", 1000);
+        send("Hello.", "out");
     }
 
     @Override
     public void onReceive(Object message) {
         System.out.printf("[%s][%s] Received: %s\n", LocalTime.now(), this.name, message);
-        send(message, "out", 1000);
+        send(message, "out");
     }
 }

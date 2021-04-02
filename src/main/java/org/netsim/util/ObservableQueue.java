@@ -5,14 +5,14 @@ import java.util.*;
 public class ObservableQueue<E> extends AbstractQueue<E> {
 
     private final Queue<E> delegate;
-    private final List<Listener<E>> listeners = new ArrayList<>();
+    private Listener<E> listener;
 
     public ObservableQueue(Queue<E> delegate) {
         this.delegate = delegate;
     }
 
     public void registerListener(Listener<E> listener) {
-        listeners.add(listener);
+        this.listener = listener;
     }
 
     @Override
@@ -23,7 +23,7 @@ public class ObservableQueue<E> extends AbstractQueue<E> {
     @Override
     public boolean offer(E e) {
         if (delegate.offer(e)) {
-            listeners.forEach(listener -> listener.onElementAdded(e));
+            listener.onElementAdded(e);
             return true;
         } else {
             return false;

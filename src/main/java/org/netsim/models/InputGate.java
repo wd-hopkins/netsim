@@ -19,7 +19,7 @@ public class InputGate {
         return this.buffer.poll();
     }
 
-    public void addListener(ObservableQueue.Listener<Object> listener) {
+    public void setListener(ObservableQueue.Listener<Object> listener) {
         this.buffer.registerListener(listener);
     }
 

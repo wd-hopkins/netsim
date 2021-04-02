@@ -66,7 +66,7 @@ public class CommandShell {
                         systemRegistry.execute(line);
                     } catch (UserInterruptException e) { // When user presses ctrl-c
                         if (runner.getThreadPool() != null) {
-                            runner.getThreadPool().shutdown();
+                            runner.getThreadPool().shutdownNow();
                         }
                     } catch (EndOfFileException e) { // When user presses ctrl-d
                         return;
