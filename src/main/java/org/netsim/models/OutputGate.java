@@ -11,11 +11,13 @@ public class OutputGate {
 
     private final @Getter String name;
     public InputGate connection = null;
-    private @Setter long delay;
+    private @Setter long waitingDelay;
+    private @Setter long maxTransmissionDelay;
 
     public OutputGate(String name) {
         this.name = name;
-        this.delay = 0;
+        this.waitingDelay = 0;
+        this.maxTransmissionDelay = 0;
     }
 
     private double inverseGaussian() {
@@ -34,14 +36,18 @@ public class OutputGate {
     }
 
     public void send(Object payload, ScheduledExecutorService pool) {
-        send(payload, pool, this.delay);
+        _send(payload, pool, this.maxTransmissionDelay, this.waitingDelay);
     }
 
     public void send(Object payload, ScheduledExecutorService pool, long delay) {
+        _send(payload, pool, this.maxTransmissionDelay, delay);
+    }
+    
+    private void _send(Object payload, ScheduledExecutorService pool, long maxDelay, long delay) {
         double invGauss = inverseGaussian() * 1000;
-        if (invGauss > delay) {
-            invGauss = delay;
+        if (invGauss > maxDelay) {
+            invGauss = maxDelay;
         }
-        pool.schedule(() -> this.connection.buffer.offer(payload), (long) invGauss, TimeUnit.MILLISECONDS);
+        pool.schedule(() -> this.connection.buffer.offer(payload), (long) invGauss + delay, TimeUnit.MILLISECONDS);
     }
 }

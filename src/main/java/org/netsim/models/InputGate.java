@@ -14,9 +14,17 @@ public class InputGate {
     public InputGate(String name) {
         this.name = name;
     }
+    
+    public void pause() {
+        setListener(e->{});
+    }
 
     public Object poll() {
         return this.buffer.poll();
+    }
+    
+    public void resume() {
+    
     }
 
     public void setListener(ObservableQueue.Listener<Object> listener) {

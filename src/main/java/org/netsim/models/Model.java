@@ -56,7 +56,7 @@ public abstract class Model {
             if (rightSide.length > 3) {
                 throw new IllegalArgumentException("Unexpected number of options.");
             } else if (rightSide.length == 3) {
-                out.setDelay(leftSide[1], Long.parseLong(rightSide[2].trim()));
+                out.setMaxTransmissionDelay(leftSide[1], Long.parseLong(rightSide[2].trim()));
             }
         });
     }

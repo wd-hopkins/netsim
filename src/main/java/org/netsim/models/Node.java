@@ -88,12 +88,21 @@ public class Node {
     }
 
     public void setDelay(long delay) {
-        this.out.forEach(x -> x.setDelay(delay));
+        this.out.forEach(x -> x.setWaitingDelay(delay));
     }
 
     public void setDelay(String name, long delay) {
         OutputGate out = getOutputGateByName(name);
-        out.setDelay(delay);
+        out.setWaitingDelay(delay);
+    }
+    
+    public void setMaxTransmissionDelay(long delay) {
+        this.out.forEach(x -> x.setMaxTransmissionDelay(delay));
+    }
+    
+    public void setMaxTransmissionDelay(String name, long delay) {
+        OutputGate out = getOutputGateByName(name);
+        out.setMaxTransmissionDelay(delay);
     }
 
     protected final void send(Object message) {

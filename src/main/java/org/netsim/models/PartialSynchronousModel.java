@@ -25,7 +25,7 @@ public class PartialSynchronousModel extends Model {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            this.nodes.forEach(node -> node.setDelay(this.delay));
+            this.nodes.forEach(node -> node.setMaxTransmissionDelay(this.delay));
         }).start();
         this.nodes.get(0).init();
     }
