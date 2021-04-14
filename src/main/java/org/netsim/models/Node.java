@@ -19,10 +19,10 @@ public class Node {
     public String name;
 
     public Node(String name) {
-        this.in = Collections.singletonList(new InputGate("in"));
-        this.out = Collections.singletonList(new OutputGate("out"));
         this.context = ClassUtil.getContextClass();
         this.threadPool = context == CommandShell.class ? CommandShell.getRunner().getThreadPool() : GUIApplication.getRunner().getThreadPool();
+        this.in = Collections.singletonList(new InputGate("in"));
+        this.out = Collections.singletonList(new OutputGate("out", this.threadPool));
         this.name = name;
         addListeners();
     }
@@ -43,7 +43,7 @@ public class Node {
     public final void createOutGates(List<String> gates) {
         List<OutputGate> newGates = new ArrayList<>();
         for (String name : gates) {
-            newGates.add(new OutputGate(name));
+            newGates.add(new OutputGate(name, this.threadPool));
         }
         this.out = newGates;
     }
@@ -106,21 +106,25 @@ public class Node {
     }
 
     protected final void send(Object message) {
-        this.out.forEach(x -> x.send(message, this.threadPool));
+        this.out.forEach(x -> x.send(message));
     }
 
     protected final void send(Object message, long delay) {
-        this.out.forEach(x -> x.send(message, this.threadPool, delay));
+        this.out.forEach(x -> x.send(message, delay));
     }
 
     protected final void send(Object message, String gateName) {
         OutputGate gate = getOutputGateByName(gateName);
-        gate.send(message, this.threadPool);
+        gate.send(message);
+    }
+
+    protected final void send(Object message, OutputGate gate) {
+        gate.send(message);
     }
 
     protected final void send(Object message, String gateName, long delay) {
         OutputGate gate = getOutputGateByName(gateName);
-        gate.send(message, this.threadPool, delay);
+        gate.send(message, delay);
     }
 
     @Override

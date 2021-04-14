@@ -5,17 +5,21 @@ import lombok.Setter;
 
 import java.util.Random;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 public class OutputGate {
 
     private final @Getter String name;
+    private final ScheduledExecutorService threadpool;
     public InputGate connection = null;
     private @Setter long waitingDelay;
     private @Setter long maxTransmissionDelay;
+    private volatile @Getter ScheduledFuture<?> latestEvent;
 
-    public OutputGate(String name) {
+    public OutputGate(String name, ScheduledExecutorService pool) {
         this.name = name;
+        this.threadpool = pool;
         this.waitingDelay = 0;
         this.maxTransmissionDelay = 0;
     }
@@ -35,19 +39,19 @@ public class OutputGate {
             return (mu * mu) / x;
     }
 
-    public void send(Object payload, ScheduledExecutorService pool) {
-        _send(payload, pool, this.maxTransmissionDelay, this.waitingDelay);
-    }
-
-    public void send(Object payload, ScheduledExecutorService pool, long delay) {
-        _send(payload, pool, this.maxTransmissionDelay, delay);
-    }
-    
-    private void _send(Object payload, ScheduledExecutorService pool, long maxDelay, long delay) {
+    private void _send(Object payload, long maxDelay, long delay) {
         double invGauss = inverseGaussian() * 1000;
         if (invGauss > maxDelay) {
             invGauss = maxDelay;
         }
-        pool.schedule(() -> this.connection.buffer.offer(payload), (long) invGauss + delay, TimeUnit.MILLISECONDS);
+        latestEvent = this.threadpool.schedule(() -> this.connection.buffer.offer(payload), (long) invGauss + delay, TimeUnit.MILLISECONDS);
+    }
+
+    public void send(Object payload) {
+        _send(payload, this.maxTransmissionDelay, this.waitingDelay);
+    }
+
+    public void send(Object payload, long delay) {
+        _send(payload, this.maxTransmissionDelay, delay);
     }
 }
