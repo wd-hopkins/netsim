@@ -2,16 +2,18 @@ package org.netsim.models;
 
 import org.netsim.cli.Option;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 public class CrashModel extends Model {
 
+    private final SecureRandom random;
     public static String modelId = "Crash";
     @Option(name = "fault_prob",
             description = "Probability that a node will fail each second.")
     private float faultProb;
 
     public CrashModel() {
+        this.random = new SecureRandom();
         this.faultProb = 0;
     }
 
@@ -24,8 +26,8 @@ public class CrashModel extends Model {
 
         this.nodes.get(0).init();
         while (true) {
-            if (new Random().nextFloat() * 100f <= faultProb) {
-                this.nodes.get(new Random().nextInt(this.nodes.size()-1)).halt();
+            if (random.nextFloat() * 100f < faultProb) {
+                this.nodes.get(random.nextInt(this.nodes.size()-1)).halt();
                 System.out.println("Oops, a node has crashed");
                 break;
             }

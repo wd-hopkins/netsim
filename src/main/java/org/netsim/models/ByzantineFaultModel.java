@@ -31,7 +31,7 @@ public class ByzantineFaultModel extends Model {
     public void run() {
         new Thread(() -> this.nodes.get(0).init()).start();
         while (true) {
-            if (random.nextFloat() * 100f <= faultProb) {
+            if (random.nextFloat() * 100f < faultProb) {
                 Node faultyNode = this.nodes.get(random.nextInt(this.nodes.size()));
                 switch (random.nextInt(4)) {
                     case 0:
@@ -51,7 +51,7 @@ public class ByzantineFaultModel extends Model {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                break;
             }
         }
     }
@@ -84,7 +84,7 @@ public class ByzantineFaultModel extends Model {
                 break;
             }
         }
-        node.send(randomString(), gate.getName());
+        node.send(randomString(), gate);
     }
 
     private void sendGlobalMessage(Node node) {
