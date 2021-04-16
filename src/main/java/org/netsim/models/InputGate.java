@@ -16,7 +16,7 @@ public class InputGate {
     }
     
     public void pause() {
-        setListener(e->{});
+        setListener(e -> poll());
     }
 
     public Object poll() {

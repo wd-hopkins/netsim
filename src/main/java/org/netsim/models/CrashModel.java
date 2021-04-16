@@ -6,8 +6,8 @@ import java.security.SecureRandom;
 
 public class CrashModel extends Model {
 
-    private final SecureRandom random;
     public static String modelId = "Crash";
+    private final SecureRandom random;
     @Option(name = "fault_prob",
             description = "Probability that a node will fail each second.")
     private float faultProb;
