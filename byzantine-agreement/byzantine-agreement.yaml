@@ -1,19 +1,45 @@
 types:
-  - name: UserImpl
+  - name: Broadcaster
     gates:
-      input: [ in ]
-      output: [ out ]
-  - name: Doubler
-    gates:
-      input: [ in ]
-      output: [ out ]
+      input: [ 1, 2, 3, 4, 5 ]
+      output: [ 1, 2, 3, 4, 5 ]
 
 nodes:
-  server: UserImpl
-  client: UserImpl
-  client1: Doubler
+  broadcaster: Broadcaster
+  receiver1: Broadcaster
+  receiver2: Broadcaster
+  receiver3: Broadcaster
+  receiver4: Broadcaster
+  receiver5: Broadcaster
 
 connections:
-  server.out: client.in
-  client.out: client1.in
-  client1.out: server.in
+  broadcaster.1: receiver1.1
+  broadcaster.2: receiver2.1
+  broadcaster.3: receiver3.1
+  broadcaster.4: receiver4.1
+  broadcaster.5: receiver5.1
+
+  receiver1.1: receiver2.2
+  receiver1.2: receiver3.2
+  receiver1.3: receiver4.2
+  receiver1.4: receiver5.2
+
+  receiver2.1: receiver1.2
+  receiver2.2: receiver3.3
+  receiver2.3: receiver4.3
+  receiver2.4: receiver5.3
+
+  receiver3.1: receiver1.3
+  receiver3.2: receiver2.3
+  receiver3.3: receiver4.4
+  receiver3.4: receiver5.4
+
+  receiver4.1: receiver1.4
+  receiver4.2: receiver2.4
+  receiver4.3: receiver3.4
+  receiver4.4: receiver5.5
+
+  receiver5.1: receiver1.5
+  receiver5.2: receiver2.5
+  receiver5.3: receiver3.5
+  receiver5.4: receiver4.5

@@ -78,7 +78,7 @@ public class ModelRunner {
             this.selectedModel.init(nodes, configConnections);
         } else {
             this.threadPool = (ScheduledThreadPoolExecutor) Executors.newScheduledThreadPool(1);
-            this.selectedModel.init(new ArrayList<>(Collections.singletonList(new Node("Node"))), new HashMap<>(Collections.singletonMap("Node.out","Node.in")));
+            this.selectedModel.init(Collections.singletonList(new Node("Node")), Collections.singletonMap("Node.out","Node.in"));
         }
 
         this.selectedModel.run();
