@@ -1,6 +1,7 @@
 package org.netsim.cli;
 
 import lombok.SneakyThrows;
+import org.apache.commons.lang3.ArrayUtils;
 import org.jline.utils.AttributedStringBuilder;
 import org.jline.utils.AttributedStyle;
 import org.netsim.models.Model;
@@ -21,7 +22,7 @@ public class ShowCommand implements Runnable {
         Class<? extends Model> clazz = selectedModel.getClass();
         List<Field> options = new ArrayList<>();
 
-        for (Field field: clazz.getDeclaredFields()) {
+        for (Field field: ArrayUtils.addAll(clazz.getFields(), clazz.getDeclaredFields())) {
             if (field.isAnnotationPresent(Option.class)) {
                 options.add(field);
             }

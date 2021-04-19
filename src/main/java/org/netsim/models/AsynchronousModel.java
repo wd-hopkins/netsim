@@ -9,7 +9,7 @@ public class AsynchronousModel extends Model {
     }
 
     @Override
-    public void run() {
+    public void start() {
         this.nodes.get(0).init();
     }
 

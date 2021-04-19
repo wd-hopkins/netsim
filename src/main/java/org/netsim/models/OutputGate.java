@@ -15,6 +15,8 @@ public class OutputGate {
     public InputGate connection = null;
     private @Setter long waitingDelay;
     private @Setter long maxTransmissionDelay;
+    private @Setter double mu;
+    private @Setter double lambda;
     private volatile @Getter ScheduledFuture<?> latestEvent;
 
     public OutputGate(String name, ScheduledExecutorService pool) {
@@ -25,9 +27,6 @@ public class OutputGate {
     }
 
     private double inverseGaussian() {
-        double mu = 0.05;
-        double lambda = 1;
-
         Random rand = new Random();
         double var = rand.nextGaussian();
         double y = var * var;

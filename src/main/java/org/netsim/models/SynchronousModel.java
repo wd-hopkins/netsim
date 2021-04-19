@@ -14,7 +14,7 @@ public class SynchronousModel extends Model {
     }
 
     @Override
-    public void run() {
+    public void start() {
         this.nodes.forEach(node -> node.setMaxTransmissionDelay(this.delay));
         nodes.get(0).init();
     }

@@ -8,7 +8,7 @@ public class Broadcaster extends Node {
 
     private final int maxFaultyNodes;
     private final int numNodes;
-    private volatile boolean accepted;
+    private boolean accepted;
     private AtomicInteger numEcho;
     private AtomicInteger numReady;
     private AtomicInteger step;
@@ -16,7 +16,7 @@ public class Broadcaster extends Node {
     public Broadcaster(String name) {
         super(name);
         this.maxFaultyNodes = 1;
-        this.numNodes = 2;
+        this.numNodes = 6;
         this.accepted = false;
         this.numEcho = new AtomicInteger();
         this.numReady = new AtomicInteger();
@@ -28,16 +28,17 @@ public class Broadcaster extends Node {
         String[] headsOrTails = {"Heads", "Tails"};
         int index = new SecureRandom().nextInt(headsOrTails.length);
         step.set(1);
-        send(headsOrTails[index] + "|initial");
+        send(headsOrTails[index] + "|initial", 1000);
     }
 
     @Override
     public synchronized void onReceive(Object message) {
+        System.out.printf("[%s][%s] Received: %s\n", LocalTime.now(), this.name, message);
         String[] content = ((String) message).split("\\|");
         switch (content[1]) {
             case "initial":
                 //System.out.printf("[%s][%s] Sending echo\n", LocalTime.now(), this.name);
-                send(content[0] + "|echo");
+                send(content[0] + "|echo", 1000);
                 step.set(2);
                 return;
             case "echo":
@@ -51,7 +52,7 @@ public class Broadcaster extends Node {
         if (step.get() == 1) {
             if (numEcho.get() >= (numNodes + maxFaultyNodes) / 2 || numReady.get() == maxFaultyNodes + 1) {
                 //System.out.printf("[%s][%s] Sending echo\n", LocalTime.now(), this.name);
-                send(content[0] + "|echo");
+                send(content[0] + "|echo", 1000);
                 step.set(2);
                 return;
             }
@@ -60,7 +61,7 @@ public class Broadcaster extends Node {
         if (step.get() == 2) {
             if (numEcho.get() >= (numNodes + maxFaultyNodes) / 2 || numReady.get() == maxFaultyNodes + 1) {
                 //System.out.printf("[%s][%s] Sending ready\n", LocalTime.now(), this.name);
-                send(content[0] + "|ready");
+                send(content[0] + "|ready", 1000);
                 step.set(3);
                 return;
             }

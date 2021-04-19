@@ -68,6 +68,7 @@ public class CommandShell {
                         if (runner.getThreadPool() != null) {
                             runner.getThreadPool().shutdownNow();
                         }
+                        runner.getSelectedModel().interrupt();
                     } catch (EndOfFileException e) { // When user presses ctrl-d
                         return;
                     } catch (Exception e) {

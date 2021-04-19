@@ -2,6 +2,7 @@ package org.netsim.models;
 
 import lombok.Getter;
 import lombok.SneakyThrows;
+import org.netsim.cli.Option;
 import org.netsim.util.ClassUtil;
 
 import java.util.ArrayList;
@@ -13,6 +14,15 @@ public abstract class Model {
     private static final @Getter Set<Class<? extends Model>> extendingClasses;
     public static String modelId = "Choose a model";
     protected List<Node> nodes = new ArrayList<>();
+    protected @Getter Thread thread;
+    
+    @Option(name = "mu",
+            description = "Mean of distribution of message delays.")
+    public double mu;
+    
+    @Option(name = "lambda",
+            description = "Scale of distribution of message delays.")
+    public double lambda;
 
     static {
         extendingClasses = ClassUtil.collectExtendingClasses(Model.class, "org.netsim.models");
@@ -20,8 +30,11 @@ public abstract class Model {
     }
 
     public Model() {
-
+        this.mu = 0.05;
+        this.lambda = 1;
     }
+
+    public abstract void start();
 
     @SneakyThrows
     public static Model getExtendingClassById(String id) {
@@ -35,13 +48,6 @@ public abstract class Model {
         }
         return m;
     }
-
-    public void init(List<Node> nodes, Map<String, String> connections) {
-        this.nodes = nodes;
-        this.applyConnections(connections);
-    }
-
-    public abstract void run();
 
     private void applyConnections(Map<String, String> connections) {
         connections.forEach((k, v) -> {
@@ -61,6 +67,17 @@ public abstract class Model {
         });
     }
 
+    public void init(List<Node> nodes, Map<String, String> connections) {
+        this.nodes = nodes;
+        this.applyConnections(connections);
+    }
+
+    public void interrupt() {
+        if (thread != null) {
+            thread.interrupt();
+        }
+    }
+
     public Node getNodeByName(String name) {
         for (Node node : nodes) {
             if (node.name.equals(name)) {
@@ -68,6 +85,11 @@ public abstract class Model {
             }
         }
         throw new IllegalArgumentException("Node not defined: " + name);
+    }
+    
+    public void run() {
+        this.nodes.forEach(x -> x.setDist(this.mu, this.lambda));
+        this.start();
     }
 
     @Override

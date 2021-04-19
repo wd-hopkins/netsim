@@ -1,6 +1,7 @@
 package org.netsim.cli;
 
 import lombok.SneakyThrows;
+import org.apache.commons.lang3.ArrayUtils;
 import org.netsim.models.EmptyModel;
 import org.netsim.models.Model;
 import picocli.CommandLine.Command;
@@ -28,7 +29,7 @@ public class SetCommand implements Runnable {
 
         option.forEach((k, v) -> {
             Field field = null;
-            for (Field f: clazz.getDeclaredFields()) {
+            for (Field f: ArrayUtils.addAll(clazz.getFields(), clazz.getDeclaredFields())) {
                 if (f.isAnnotationPresent(Option.class)) {
                     if (!f.getAnnotation(Option.class).name().equals("")) {
                         if (f.getAnnotation(Option.class).name().equals(k)) {

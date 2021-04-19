@@ -95,6 +95,13 @@ public class Node {
         OutputGate out = getOutputGateByName(name);
         out.setWaitingDelay(delay);
     }
+
+    public void setDist(double mu, double lambda) {
+        this.out.forEach(x -> {
+            x.setMu(mu);
+            x.setLambda(lambda);
+        });
+    }
     
     public void setMaxTransmissionDelay(long delay) {
         this.out.forEach(x -> x.setMaxTransmissionDelay(delay));
