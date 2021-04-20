@@ -13,6 +13,7 @@ public class OutputGate {
     private final @Getter String name;
     private final ScheduledExecutorService threadpool;
     public InputGate connection = null;
+    private @Setter @Getter boolean customMaxDelay;
     private @Setter long waitingDelay;
     private @Setter long maxTransmissionDelay;
     private @Setter double mu;
@@ -38,19 +39,19 @@ public class OutputGate {
             return (mu * mu) / x;
     }
 
-    private void _send(Object payload, long maxDelay, long delay) {
+    private void _send(Object payload, long delay) {
         double invGauss = inverseGaussian() * 1000;
-        if (invGauss > maxDelay) {
-            invGauss = maxDelay;
+        if (invGauss > this.maxTransmissionDelay && this.maxTransmissionDelay != 0) {
+            invGauss = this.maxTransmissionDelay;
         }
         latestEvent = this.threadpool.schedule(() -> this.connection.buffer.offer(payload), (long) invGauss + delay, TimeUnit.MILLISECONDS);
     }
 
     public void send(Object payload) {
-        _send(payload, this.maxTransmissionDelay, this.waitingDelay);
+        _send(payload, this.waitingDelay);
     }
 
     public void send(Object payload, long delay) {
-        _send(payload, this.maxTransmissionDelay, delay);
+        _send(payload, delay);
     }
 }

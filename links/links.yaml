@@ -10,4 +10,4 @@ nodes:
 
 connections:
   async.out: sync.in
-  sync.out: async.in -> 500
+  sync.out: async.in -> 100

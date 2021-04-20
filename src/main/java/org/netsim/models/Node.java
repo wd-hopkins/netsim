@@ -110,6 +110,7 @@ public class Node {
     public void setMaxTransmissionDelay(String name, long delay) {
         OutputGate out = getOutputGateByName(name);
         out.setMaxTransmissionDelay(delay);
+        out.setCustomMaxDelay(true);
     }
 
     protected final void send(Object message) {
