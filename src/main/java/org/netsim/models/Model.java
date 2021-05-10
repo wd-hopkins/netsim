@@ -10,17 +10,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class Model {
+public class Model {
     private static final @Getter Set<Class<? extends Model>> extendingClasses;
     public static String modelId = "Choose a model";
     protected List<Node> nodes = new ArrayList<>();
     protected @Getter Thread thread;
     
-    @Option(name = "mu",
+    @Option(name = "mean",
             description = "Mean of distribution of message delays.")
     public double mu;
     
-    @Option(name = "lambda",
+    @Option(name = "scale",
             description = "Scale of distribution of message delays.")
     public double lambda;
 
@@ -33,8 +33,6 @@ public abstract class Model {
         this.mu = 0.05;
         this.lambda = 1;
     }
-
-    public abstract void start();
 
     @SneakyThrows
     public static Model getExtendingClassById(String id) {
@@ -67,18 +65,23 @@ public abstract class Model {
         });
     }
 
-    public void init(List<Node> nodes, Map<String, String> connections) {
-        this.nodes = nodes;
-        this.applyConnections(connections);
+    /**
+     * This method is called before the model is run. Used to set node values before a run of the model. The return
+     * type is used to signify if the setup was successful or not, e.g checking bounds on model options.
+     */
+    public boolean setup() {
+        return true;
     }
 
-    public void interrupt() {
-        if (thread != null) {
-            thread.interrupt();
-        }
+    /**
+     * This method is run on a separate thread to the network's execution, and should be overwritten when there is
+     * a loop that runs throughout the network's duration.
+     */
+    public void start() {
+
     }
 
-    public Node getNodeByName(String name) {
+    public final Node getNodeByName(String name) {
         for (Node node : nodes) {
             if (node.name.equals(name)) {
                 return node;
@@ -86,10 +89,24 @@ public abstract class Model {
         }
         throw new IllegalArgumentException("Node not defined: " + name);
     }
-    
-    public void run() {
+
+    public final void init(List<Node> nodes, Map<String, String> connections) {
+        this.nodes = nodes;
+        this.applyConnections(connections);
+    }
+
+    public final void interrupt() {
+        if (thread != null) {
+            thread.interrupt();
+        }
+    }
+
+    public final void run() {
         this.nodes.forEach(x -> x.setDist(this.mu, this.lambda));
-        this.start();
+        if (!this.setup()) return;
+        this.thread = new Thread(this::start);
+        this.thread.start();
+        this.nodes.get(0).init();
     }
 
     @Override

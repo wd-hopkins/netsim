@@ -18,28 +18,28 @@ public class CrashModel extends Model {
     }
 
     @Override
-    public void start() {
+    public boolean setup() {
         if (faultProb > 100) {
             System.out.println("Probability should be in the range of 0-100.");
-            return;
+            return false;
         }
+        return true;
+    }
 
-        this.nodes.get(0).init();
-        this.thread = new Thread(() -> {
-            while (true) {
-                if (random.nextFloat() * 100f < faultProb) {
-                    this.nodes.get(random.nextInt(this.nodes.size()-1)).halt();
-                    System.out.println("Oops, a node has crashed");
-                    break;
-                }
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    break;
-                }
+    @Override
+    public void start() {
+        while (true) {
+            if (random.nextFloat() * 100f < faultProb) {
+                this.nodes.get(random.nextInt(this.nodes.size()-1)).halt();
+                System.out.println("Oops, a node has crashed");
+                break;
             }
-        });
-        this.thread.start();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                break;
+            }
+        }
     }
 
     public String toString() {

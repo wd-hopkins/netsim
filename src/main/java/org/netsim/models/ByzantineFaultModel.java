@@ -37,38 +37,34 @@ public class ByzantineFaultModel extends Model {
     @Override
     public void start() {
         this.faultyNodes = new HashSet<>();
-        this.thread = new Thread(() -> {
-            while (true) {
-                if (random.nextFloat() * 100f < faultProb) {
-                    Node faultyNode = this.nodes.get(random.nextInt(this.nodes.size()));
-                    if (faultyNodes.size() == numFaulty && !faultyNodes.contains(faultyNode)) {
-                        continue;
-                    }
-                    faultyNodes.add(faultyNode);
-                    switch (random.nextInt(4)) {
-                        case 0:
-                            breakLink(faultyNode);
-                            break;
-                        case 1:
-                            delayLink(faultyNode);
-                            break;
-                        case 2:
-                            sendArbitraryMessage(faultyNode);
-                            break;
-                        case 3:
-                            sendGlobalMessage(faultyNode);
-                            break;
-                    }
+        while (true) {
+            if (random.nextFloat() * 100f < faultProb) {
+                Node faultyNode = this.nodes.get(random.nextInt(this.nodes.size()));
+                if (faultyNodes.size() == numFaulty && !faultyNodes.contains(faultyNode)) {
+                    continue;
                 }
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    break;
+                faultyNodes.add(faultyNode);
+                switch (random.nextInt(4)) {
+                    case 0:
+                        breakLink(faultyNode);
+                        break;
+                    case 1:
+                        delayLink(faultyNode);
+                        break;
+                    case 2:
+                        sendArbitraryMessage(faultyNode);
+                        break;
+                    case 3:
+                        sendGlobalMessage(faultyNode);
+                        break;
                 }
             }
-        });
-        this.thread.start();
-        new Thread(() -> this.nodes.get(0).init()).start();
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                break;
+            }
+        }
     }
 
     private void breakLink(Node node) {

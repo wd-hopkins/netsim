@@ -14,13 +14,13 @@ public class SynchronousModel extends Model {
     }
 
     @Override
-    public void start() {
+    public boolean setup() {
         this.nodes.forEach(node -> node.out.forEach(gate -> {
             if (!gate.isCustomMaxDelay()) {
                 gate.setMaxTransmissionDelay(this.delay);
             }
         }));
-        nodes.get(0).init();
+        return true;
     }
 
     @Override

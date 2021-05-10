@@ -75,7 +75,7 @@ public class Node {
         throw new IllegalArgumentException("Gate not defined: " + name);
     }
 
-    public void halt() {
+    public final void halt() {
         this.in.forEach(x -> x.setListener(e -> {}));
     }
 
@@ -87,27 +87,27 @@ public class Node {
         System.out.printf("[%s] Received: %s\n", this.name, message);
     }
 
-    public void setDelay(long delay) {
+    public final void setDelay(long delay) {
         this.out.forEach(x -> x.setWaitingDelay(delay));
     }
 
-    public void setDelay(String name, long delay) {
+    public final void setDelay(String name, long delay) {
         OutputGate out = getOutputGateByName(name);
         out.setWaitingDelay(delay);
     }
 
-    public void setDist(double mu, double lambda) {
+    public final void setDist(double mu, double lambda) {
         this.out.forEach(x -> {
             x.setMu(mu);
             x.setLambda(lambda);
         });
     }
     
-    public void setMaxTransmissionDelay(long delay) {
+    public final void setMaxTransmissionDelay(long delay) {
         this.out.forEach(x -> x.setMaxTransmissionDelay(delay));
     }
     
-    public void setMaxTransmissionDelay(String name, long delay) {
+    public final void setMaxTransmissionDelay(String name, long delay) {
         OutputGate out = getOutputGateByName(name);
         out.setMaxTransmissionDelay(delay);
         out.setCustomMaxDelay(true);

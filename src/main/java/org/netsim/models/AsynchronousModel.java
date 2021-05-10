@@ -9,11 +9,6 @@ public class AsynchronousModel extends Model {
     }
 
     @Override
-    public void start() {
-        this.nodes.get(0).init();
-    }
-
-    @Override
     public String toString() {
         return modelId;
     }

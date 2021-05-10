@@ -19,15 +19,12 @@ public class PartialSynchronousModel extends Model {
 
     @Override
     public void start() {
-        new Thread(() -> {
-            try {
-                Thread.sleep(globalStabTime);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            this.nodes.forEach(node -> node.setMaxTransmissionDelay(this.delay));
-        }).start();
-        this.nodes.get(0).init();
+        try {
+            Thread.sleep(globalStabTime);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        this.nodes.forEach(node -> node.setMaxTransmissionDelay(this.delay));
     }
 
     @Override
