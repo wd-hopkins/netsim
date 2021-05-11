@@ -13,11 +13,8 @@ public class ListCommand implements Runnable {
     @SneakyThrows
     @Override
     public void run() {
-        System.out.println(new AttributedStringBuilder()
-                .style(AttributedStyle.DEFAULT.foreground(AttributedStyle.BLUE))
-                .append("Available models:")
-                .toAnsi()
-        );
+        printHeader("Available Models:");
+
         for (Class<? extends Model> m : Model.getExtendingClasses()) {
             System.out.println(new AttributedStringBuilder()
                     .append("  ")
@@ -26,5 +23,25 @@ public class ListCommand implements Runnable {
                     .toAnsi()
             );
         }
+        if (!Model.getUserModels().isEmpty()) {
+            printHeader("\nUser Models:");
+
+            for (Class<? extends Model> m : Model.getUserModels()) {
+                System.out.println(new AttributedStringBuilder()
+                        .append("  ")
+                        .style(AttributedStyle.BOLD)
+                        .append((String) m.getField("modelId").get(null))
+                        .toAnsi()
+                );
+            }
+        }
+    }
+
+    private void printHeader(String message) {
+        System.out.println(new AttributedStringBuilder()
+                .style(AttributedStyle.DEFAULT.foreground(AttributedStyle.BLUE))
+                .append(message)
+                .toAnsi()
+        );
     }
 }

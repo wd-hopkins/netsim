@@ -16,7 +16,7 @@ public class StartButton {
         startButton.setOnAction((action) -> {
             Node mcb = startButton.getParent().lookup("#ModelComboBox");
             Model model = (Model) ((ComboBox<?>) mcb).getSelectionModel().getSelectedItem();
-            model.run();
+            model.start();
         });
     }
 }

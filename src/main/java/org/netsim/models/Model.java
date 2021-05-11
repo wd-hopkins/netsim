@@ -5,13 +5,11 @@ import lombok.SneakyThrows;
 import org.netsim.cli.Option;
 import org.netsim.util.ClassUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Model {
     private static final @Getter Set<Class<? extends Model>> extendingClasses;
+    private static final @Getter Set<Class<? extends Model>> userModels;
     public static String modelId = "Choose a model";
     protected List<Node> nodes = new ArrayList<>();
     protected @Getter Thread thread;
@@ -27,6 +25,7 @@ public class Model {
     static {
         extendingClasses = ClassUtil.collectExtendingClasses(Model.class, "org.netsim.models");
         extendingClasses.remove(EmptyModel.class);
+        userModels = new HashSet<>();
     }
 
     public Model() {
@@ -34,10 +33,15 @@ public class Model {
         this.lambda = 1;
     }
 
-    @SneakyThrows
     public static Model getExtendingClassById(String id) {
+        Model model = getModelFromSet(extendingClasses, id);
+        return model != null ? model : getModelFromSet(userModels, id);
+    }
+
+    @SneakyThrows
+    private static Model getModelFromSet(Set<Class<? extends Model>> set, String id) {
         Model m = null;
-        for (Class<? extends Model> model : extendingClasses) {
+        for (Class<? extends Model> model : set) {
             String modelId = (String) model.getField("modelId").get(null);
             if (id.equals(modelId) || id.equals(modelId.toLowerCase())) {
                 m = model.getDeclaredConstructor().newInstance();
@@ -77,7 +81,7 @@ public class Model {
      * This method is run on a separate thread to the network's execution, and should be overwritten when there is
      * a loop that runs throughout the network's duration.
      */
-    public void start() {
+    public void run() {
 
     }
 
@@ -101,10 +105,10 @@ public class Model {
         }
     }
 
-    public final void run() {
+    public final void start() {
         this.nodes.forEach(x -> x.setDist(this.mu, this.lambda));
         if (!this.setup()) return;
-        this.thread = new Thread(this::start);
+        this.thread = new Thread(this::run);
         this.thread.start();
         this.nodes.get(0).init();
     }

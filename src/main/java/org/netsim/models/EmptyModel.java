@@ -7,7 +7,7 @@ public class EmptyModel extends Model {
     }
 
     @Override
-    public void start() {
+    public void run() {
         System.out.println("Choose a model first");
     }
 

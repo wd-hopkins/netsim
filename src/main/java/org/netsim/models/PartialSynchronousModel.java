@@ -18,7 +18,7 @@ public class PartialSynchronousModel extends Model {
     }
 
     @Override
-    public void start() {
+    public void run() {
         try {
             Thread.sleep(globalStabTime);
         } catch (InterruptedException e) {

@@ -27,7 +27,7 @@ public class CrashModel extends Model {
     }
 
     @Override
-    public void start() {
+    public void run() {
         while (true) {
             if (random.nextFloat() * 100f < faultProb) {
                 this.nodes.get(random.nextInt(this.nodes.size()-1)).halt();

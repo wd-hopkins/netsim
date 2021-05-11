@@ -81,7 +81,7 @@ public class ModelRunner {
             this.selectedModel.init(Collections.singletonList(new Node("Node")), Collections.singletonMap("Node.out","Node.in"));
         }
 
-        this.selectedModel.run();
+        this.selectedModel.start();
         //TODO: Keep track of scheduled events in order to determine if the simulation has concluded
         //Thread.sleep(1000);
         System.out.println("End of simulation");

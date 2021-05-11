@@ -35,7 +35,7 @@ public class ByzantineFaultModel extends Model {
     }
 
     @Override
-    public void start() {
+    public void run() {
         this.faultyNodes = new HashSet<>();
         while (true) {
             if (random.nextFloat() * 100f < faultProb) {

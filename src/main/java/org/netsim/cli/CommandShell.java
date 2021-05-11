@@ -131,7 +131,8 @@ public class CommandShell {
                     ShowCommand.class,
                     SetCommand.class,
                     ListCommand.class,
-                    PwdCommand.class
+                    PwdCommand.class,
+                    LoadCommand.class
             })
     static class CliCommands implements Runnable {
         PrintWriter out;
