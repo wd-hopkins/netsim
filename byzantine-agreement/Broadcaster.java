@@ -2,73 +2,69 @@ import org.netsim.models.Node;
 
 import java.security.SecureRandom;
 import java.time.LocalTime;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Broadcaster extends Node {
 
     private final int maxFaultyNodes;
     private final int numNodes;
     private boolean accepted;
-    private AtomicInteger numEcho;
-    private AtomicInteger numReady;
-    private AtomicInteger step;
+    private int numEcho;
+    private int numReady;
+    private int step;
 
     public Broadcaster(String name) {
         super(name);
         this.maxFaultyNodes = 1;
-        this.numNodes = 6;
+        this.numNodes = 7;
         this.accepted = false;
-        this.numEcho = new AtomicInteger();
-        this.numReady = new AtomicInteger();
-        this.step = new AtomicInteger();
+        this.numEcho = 0;
+        this.numReady = 0;
+        this.step = 0;
     }
 
     @Override
     public void init() {
         String[] headsOrTails = {"Heads", "Tails"};
         int index = new SecureRandom().nextInt(headsOrTails.length);
-        step.set(1);
-        send(headsOrTails[index] + "|initial", 1000);
+        step = 1;
+        send(headsOrTails[index] + "|initial");
     }
 
     @Override
     public synchronized void onReceive(Object message) {
-        System.out.printf("[%s][%s] Received: %s\n", LocalTime.now(), this.name, message);
+        //System.out.printf("[%s][%s] Received: %s\n", LocalTime.now(), this.name, message);
         String[] content = ((String) message).split("\\|");
         switch (content[1]) {
             case "initial":
-                //System.out.printf("[%s][%s] Sending echo\n", LocalTime.now(), this.name);
-                send(content[0] + "|echo", 1000);
-                step.set(2);
+                send(content[0] + "|echo");
+                step = 2;
                 return;
             case "echo":
-                numEcho.getAndIncrement();
+                numEcho++;
                 break;
             case "ready":
-                numReady.getAndIncrement();
+                numReady++;
                 break;
         }
 
-        if (step.get() == 1) {
-            if (numEcho.get() >= (numNodes + maxFaultyNodes) / 2 || numReady.get() == maxFaultyNodes + 1) {
-                //System.out.printf("[%s][%s] Sending echo\n", LocalTime.now(), this.name);
-                send(content[0] + "|echo", 1000);
-                step.set(2);
+        if (step == 1) {
+            if (numEcho >= (numNodes + maxFaultyNodes) / 2 || numReady == maxFaultyNodes + 1) {
+                send(content[0] + "|echo");
+                step = 2;
                 return;
             }
         }
 
-        if (step.get() == 2) {
-            if (numEcho.get() >= (numNodes + maxFaultyNodes) / 2 || numReady.get() == maxFaultyNodes + 1) {
-                //System.out.printf("[%s][%s] Sending ready\n", LocalTime.now(), this.name);
-                send(content[0] + "|ready", 1000);
-                step.set(3);
+        if (step == 2) {
+            if (numEcho >= (numNodes + maxFaultyNodes) / 2 || numReady == maxFaultyNodes + 1) {
+                send(content[0] + "|ready");
+                step = 3;
                 return;
             }
         }
 
-        if (step.get() == 3) {
-            if (numReady.get() == 2 * maxFaultyNodes + 1 && !accepted) {
+        if (step == 3) {
+            if (numReady == 2 * maxFaultyNodes + 1 && !accepted) {
                 System.out.printf("[%s][%s] Value accepted: %s\n", LocalTime.now(), this.name, content[0]);
                 accepted = true;
             }

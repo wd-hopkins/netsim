@@ -12,7 +12,7 @@ public class Model {
     private static final @Getter Set<Class<? extends Model>> userModels;
     public static String modelId = "Choose a model";
     protected List<Node> nodes = new ArrayList<>();
-    protected @Getter Thread thread;
+    protected Thread thread;
     
     @Option(name = "mean",
             description = "Mean of distribution of message delays.")
@@ -100,14 +100,16 @@ public class Model {
     }
 
     public final void interrupt() {
-        if (thread != null) {
+        if (thread != null && thread.isAlive()) {
             thread.interrupt();
         }
     }
 
     public final void start() {
         this.nodes.forEach(x -> x.setDist(this.mu, this.lambda));
-        if (!this.setup()) return;
+        if (!this.setup()) {
+            return;
+        }
         this.thread = new Thread(this::run);
         this.thread.start();
         this.nodes.get(0).init();

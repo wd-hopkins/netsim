@@ -1,8 +1,8 @@
 types:
   - name: Broadcaster
     gates:
-      input: [ in1, in2, in3, in4, in5 ]
-      output: [ out1, out2, out3, out4, out5 ]
+      input: [ in1, in2, in3, in4, in5, in6, in7 ]
+      output: [ out1, out2, out3, out4, out5, out6, out7 ]
 
 nodes:
   broadcaster: Broadcaster
@@ -11,6 +11,8 @@ nodes:
   receiver3: Broadcaster
   receiver4: Broadcaster
   receiver5: Broadcaster
+  receiver6: Broadcaster
+  receiver7: Broadcaster
 
 connections:
   broadcaster.out1: receiver1.in1
@@ -18,28 +20,55 @@ connections:
   broadcaster.out3: receiver3.in1
   broadcaster.out4: receiver4.in1
   broadcaster.out5: receiver5.in1
+  broadcaster.out6: receiver6.in1
+  broadcaster.out7: receiver7.in1
 
   receiver1.out1: receiver2.in2
   receiver1.out2: receiver3.in2
   receiver1.out3: receiver4.in2
   receiver1.out4: receiver5.in2
+  receiver1.out5: receiver6.in2
+  receiver1.out6: receiver7.in2
 
   receiver2.out1: receiver1.in2
   receiver2.out2: receiver3.in3
   receiver2.out3: receiver4.in3
   receiver2.out4: receiver5.in3
+  receiver2.out5: receiver6.in3
+  receiver2.out6: receiver7.in3
 
   receiver3.out1: receiver1.in3
   receiver3.out2: receiver2.in3
   receiver3.out3: receiver4.in4
   receiver3.out4: receiver5.in4
+  receiver3.out5: receiver6.in4
+  receiver3.out6: receiver7.in4
 
   receiver4.out1: receiver1.in4
   receiver4.out2: receiver2.in4
   receiver4.out3: receiver3.in4
   receiver4.out4: receiver5.in5
+  receiver4.out5: receiver6.in5
+  receiver4.out6: receiver7.in5
 
   receiver5.out1: receiver1.in5
   receiver5.out2: receiver2.in5
   receiver5.out3: receiver3.in5
   receiver5.out4: receiver4.in5
+  receiver5.out5: receiver6.in6
+  receiver5.out6: receiver7.in6
+
+  receiver6.out1: receiver1.in6
+  receiver6.out2: receiver2.in6
+  receiver6.out3: receiver3.in6
+  receiver6.out4: receiver4.in6
+  receiver6.out5: receiver5.in6
+  receiver6.out6: receiver7.in7
+
+  receiver7.out1: receiver1.in7
+  receiver7.out2: receiver2.in7
+  receiver7.out3: receiver3.in7
+  receiver7.out4: receiver4.in7
+  receiver7.out5: receiver5.in7
+  receiver7.out6: receiver6.in7
+
