@@ -112,7 +112,7 @@ public class Model {
         }
         this.thread = new Thread(this::run);
         this.thread.start();
-        this.nodes.get(0).init();
+        this.nodes.forEach(Node::init);
     }
 
     @Override

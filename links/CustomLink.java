@@ -17,7 +17,9 @@ public class CustomLink extends Node {
 
     @Override
     public void init() {
-        send(LocalTime.now(), "out");
+        if (this.name.equals("async")) {
+            send(LocalTime.now(), "out");
+        }
     }
 
     @Override

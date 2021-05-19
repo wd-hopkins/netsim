@@ -14,20 +14,21 @@ public class Broadcaster extends Node {
 
     public Broadcaster(String name) {
         super(name);
-        this.maxFaultyNodes = 1;
+        this.maxFaultyNodes = 2;
         this.numNodes = 7;
         this.accepted = false;
         this.numEcho = 0;
         this.numReady = 0;
-        this.step = 0;
+        this.step = 1;
     }
 
     @Override
     public void init() {
-        String[] headsOrTails = {"Heads", "Tails"};
-        int index = new SecureRandom().nextInt(headsOrTails.length);
-        step = 1;
-        send(headsOrTails[index] + "|initial");
+        if (this.name.equals("broadcaster")) {
+            String[] headsOrTails = {"Heads", "Tails"};
+            int index = new SecureRandom().nextInt(headsOrTails.length);
+            send(headsOrTails[index] + "|initial", 2000);
+        }
     }
 
     @Override
@@ -36,7 +37,7 @@ public class Broadcaster extends Node {
         String[] content = ((String) message).split("\\|");
         switch (content[1]) {
             case "initial":
-                send(content[0] + "|echo");
+                send(content[0] + "|echo", 2000);
                 step = 2;
                 return;
             case "echo":
@@ -49,7 +50,7 @@ public class Broadcaster extends Node {
 
         if (step == 1) {
             if (numEcho >= (numNodes + maxFaultyNodes) / 2 || numReady == maxFaultyNodes + 1) {
-                send(content[0] + "|echo");
+                send(content[0] + "|echo", 2000);
                 step = 2;
                 return;
             }
@@ -57,7 +58,7 @@ public class Broadcaster extends Node {
 
         if (step == 2) {
             if (numEcho >= (numNodes + maxFaultyNodes) / 2 || numReady == maxFaultyNodes + 1) {
-                send(content[0] + "|ready");
+                send(content[0] + "|ready", 2000);
                 step = 3;
                 return;
             }

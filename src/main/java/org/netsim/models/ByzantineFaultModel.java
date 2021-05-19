@@ -68,15 +68,15 @@ public class ByzantineFaultModel extends Model {
     }
 
     private void breakLink(Node node) {
-        int gate = random.nextInt(node.in.size());
-        node.in.get(gate).pause();
-        System.out.printf("[%s][%s] Broken Link.\n", node.name, node.in.get(gate).getName());
+        int gate = random.nextInt(node.out.size());
+        node.out.get(gate).connection = null;
+        System.out.printf("[%s][%s] Broken Link.\n", node.name, node.out.get(gate).getName());
     }
 
     private void delayLink(Node node) {
         int gate = random.nextInt(node.out.size());
         node.out.get(gate).setWaitingDelay(1000);
-        System.out.printf("[%s][%s] Link Delayed.\n", node.name, node.in.get(gate).getName());
+        System.out.printf("[%s][%s] Link Delayed.\n", node.name, node.out.get(gate).getName());
     }
 
     private String randomString() {
@@ -91,11 +91,12 @@ public class ByzantineFaultModel extends Model {
         OutputGate gate = node.out.get(gateIndex);
         while (true) {
             ScheduledFuture<?> queuedEvent = gate.getLatestEvent();
-            if (queuedEvent == null || queuedEvent.isDone() || queuedEvent.cancel(true)) {
+            if (queuedEvent != null && !queuedEvent.isDone() && queuedEvent.cancel(true)) {
                 break;
             }
         }
         node.send(randomString(), gate);
+        System.out.printf("[%s][%s] Sent arbitrary message.\n", node.name, gate.getName());
     }
 
     private void sendGlobalMessage(Node node) {

@@ -30,8 +30,9 @@ public class CrashModel extends Model {
     public void run() {
         while (true) {
             if (random.nextFloat() * 100f < faultProb) {
-                this.nodes.get(random.nextInt(this.nodes.size()-1)).halt();
-                System.out.println("Oops, a node has crashed");
+                Node crashedNode = this.nodes.get(random.nextInt(this.nodes.size()-1));
+                crashedNode.halt();
+                System.out.printf("%s has crashed\n", crashedNode.name);
                 break;
             }
             try {
