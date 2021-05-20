@@ -14,7 +14,6 @@ public class ModelTest {
 
     @BeforeAll
     static void setup() {
-        NetworkSimulator.runWithGui = false;
         runner = CommandShell.getRunner();
         runner.setWorkingDirectory(new File(runner.getWorkingDirectory(), "links"));
         runner.setSelectedModel(new PartialSynchronousModel());

@@ -2,8 +2,6 @@ package org.netsim.models;
 
 import lombok.Getter;
 import org.netsim.cli.CommandShell;
-import org.netsim.ui.GUIApplication;
-import org.netsim.util.ClassUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,15 +10,13 @@ import java.util.concurrent.ScheduledExecutorService;
 
 public class Node {
 
-    private final Class<?> context;
     private final ScheduledExecutorService threadPool;
     protected volatile @Getter List<InputGate> in;
     protected volatile @Getter List<OutputGate> out;
     public String name;
 
     public Node(String name) {
-        this.context = ClassUtil.getContextClass();
-        this.threadPool = context == CommandShell.class ? CommandShell.getRunner().getThreadPool() : GUIApplication.getRunner().getThreadPool();
+        this.threadPool = CommandShell.getRunner().getThreadPool();
         this.in = Collections.singletonList(new InputGate("in"));
         this.out = Collections.singletonList(new OutputGate("out", this.threadPool));
         this.name = name;

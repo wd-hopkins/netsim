@@ -1,9 +1,7 @@
 package org.netsim.util;
 
 import lombok.SneakyThrows;
-import org.netsim.NetworkSimulator;
 import org.netsim.cli.CommandShell;
-import org.netsim.ui.GUIApplication;
 import org.reflections.Reflections;
 
 import javax.tools.JavaCompiler;
@@ -50,14 +48,6 @@ public class ClassUtil {
         // Create compilation task and run
         JavaCompiler.CompilationTask task = compiler.getTask(null, fileManager, null, options, null, compilationUnit);
         return task.call();
-    }
-
-    /**
-     * Returns the class that the program has been run with. Will return GUIApplication if the program is in GUI mode,
-     * and CommandShell if the program is in CLI mode.
-     */
-    public static Class<?> getContextClass() {
-        return NetworkSimulator.runWithGui ? GUIApplication.class : CommandShell.class;
     }
 
     /**

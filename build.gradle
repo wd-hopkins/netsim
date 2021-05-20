@@ -9,23 +9,9 @@ repositories {
     mavenCentral()
 }
 
-def currentOS = org.gradle.nativeplatform.platform.internal.DefaultNativePlatform.currentOperatingSystem
-def platform
-if (currentOS.isWindows()) {
-    platform = 'win'
-} else if (currentOS.isLinux()) {
-    platform = 'linux'
-} else if (currentOS.isMacOsX()) {
-    platform = 'mac'
-}
-
 mainClassName = "org.netsim.NetworkSimulator"
 
 dependencies {
-    implementation "org.openjfx:javafx-base:15.0.1:${platform}"
-    implementation "org.openjfx:javafx-controls:15.0.1:${platform}"
-    implementation "org.openjfx:javafx-graphics:15.0.1:${platform}"
-    implementation "org.openjfx:javafx-fxml:15.0.1:${platform}"
     implementation group: 'info.picocli', name: 'picocli-shell-jline3', version: '4.6.1'
     implementation group: 'org.jline', name: 'jline-terminal-jansi', version: '3.19.0'
     implementation group: 'org.reflections', name: 'reflections', version: '0.9.12'

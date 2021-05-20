@@ -25,3 +25,5 @@ Thumbs.db
 
 # Lombok
 lombok.config
+
+*.odp
