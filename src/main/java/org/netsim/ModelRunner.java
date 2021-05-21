@@ -37,6 +37,7 @@ public class ModelRunner {
                 .toAnsi()
         );
 
+        //Check for a config file
         NetworkConfig config = null;
         try {
             config = NetworkConfig.getConfig(new File(workingDirectory, workingDirectory.getName() + ".yaml"));
@@ -45,15 +46,18 @@ public class ModelRunner {
         }
 
         if (config != null) {
+            //Retrieve config objects
             Map<File, NetworkConfig.Gate> configTypes = config.validateTypes(workingDirectory);
             Map<String, String> configNodes = config.getNodes();
             Map<String, String> configConnections = config.getConnections();
             this.threadPool = (ScheduledThreadPoolExecutor) Executors.newScheduledThreadPool(configNodes.size());
 
+            //Compile the classes under the types heading
             Map<Class<?>, NetworkConfig.Gate> classes = new HashMap<>();
             if (ClassUtil.compileJavaClass(configTypes.keySet().toArray(new File[0]))) {
                 configTypes.forEach((k, v) -> {
                     Class<?> userImpl = ClassUtil.loadClass(workingDirectory, k.getName().split("\\.")[0]);
+                    //Check if the class extends Node
                     if (!Node.class.isAssignableFrom(userImpl)) {
                         throw new ClassFormatError(String.format("Error: %s does not extend Node.\n", userImpl.getName()));
                     }
@@ -63,6 +67,7 @@ public class ModelRunner {
                 throw new CompileError("There was an error during compilation.");
             }
 
+            //Construct the node types with their respective gates
             List<Node> nodes = new ArrayList<>();
             configNodes.forEach((name, type) -> classes.forEach((clazz, gates) -> {
                 if (clazz.getName().equals(type)) {
@@ -75,6 +80,7 @@ public class ModelRunner {
             if (nodes.size() != configNodes.size()) {
                 throw new Exception("Could not create one or more nodes. Check your config file.");
             }
+            //Give to the model to create the connections
             this.selectedModel.init(nodes, configConnections);
         } else {
             this.threadPool = (ScheduledThreadPoolExecutor) Executors.newScheduledThreadPool(1);
