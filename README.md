@@ -1,4 +1,5 @@
-#Running the Application
+# Running the Application
+
 First compile the project with
 ```./gradlew build```
 and then, with Java installed, run
